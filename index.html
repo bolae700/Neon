@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>PAVLY EMAD - Personal Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<title>PAVLY EMAD - Enhanced Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
   --main-color: #00ff88;
@@ -12,6 +13,7 @@
   --secondary-color: #00ff8833;
   --accent-color: #00ccff;
   --terminal-font: 'Orbitron', monospace;
+  --glow-intensity: 0.8;
 }
 
 * {
@@ -44,18 +46,41 @@ body {
   overflow-x: hidden;
   padding: 5px;
   justify-content: center;
-  padding-top: 80px;
+  padding-top: 70px;
+  font-size: 12px;
+}
+
+/* شريط التمرير المخصص */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #001100;
+  border: 1px solid var(--main-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--main-color);
+  border-radius: 5px;
+  box-shadow: 0 0 5px var(--main-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00cc70;
+  box-shadow: 0 0 8px var(--main-color);
 }
 
 .container {
   width: 100%;
-  max-width: 800px;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 15px;
   padding: 20px 0;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .header-container {
@@ -64,7 +89,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .tabs {
@@ -72,41 +97,85 @@ body {
   background: #001100;
   border: 1px solid var(--main-color);
   overflow: hidden;
+  box-shadow: 0 0 10px var(--secondary-color);
+  position: relative;
+}
+
+.tabs::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--main-color), transparent);
+  animation: scanline 2s linear infinite;
 }
 
 .tab-btn {
   background: #001100;
   border: none;
   color: var(--main-color);
-  padding: 10px 20px;
-  font-size: 12px;
+  padding: 10px 18px;
+  font-size: 11px;
   cursor: pointer;
   transition: all 0.2s;
   text-transform: uppercase;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
   position: relative;
   overflow: hidden;
 }
 
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+  transition: left 0.3s;
+}
+
+.tab-btn:hover::before {
+  left: 100%;
+}
+
 .tab-btn:hover {
   background: var(--secondary-color);
+  text-shadow: 0 0 6px var(--main-color);
 }
 
 .tab-btn.active {
   background: var(--main-color);
   color: #000;
+  box-shadow: 0 0 10px var(--main-color);
 }
 
 .datetime-container {
   color: var(--main-color);
   font-size: 10px;
   text-align: right;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.5px;
   background: #001100;
   border: 1px solid var(--main-color);
   padding: 8px 12px;
+  box-shadow: 0 0 8px var(--secondary-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.datetime-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+  animation: shimmer 3s infinite;
 }
 
 .datetime-container div {
@@ -116,35 +185,65 @@ body {
 .tab-content {
   width: 100%;
   display: none;
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .tab-content.active {
   display: block;
-  animation: slideUp 0.4s ease-out;
+  animation: slideUp 0.3s ease-out;
 }
 
 .section {
   width: 100%;
   background: #000;
-  border: 2px solid var(--main-color);
-  box-shadow: 0 0 10px var(--secondary-color);
+  border: 1px solid var(--main-color);
+  box-shadow: 0 0 10px var(--secondary-color), inset 0 0 8px rgba(0, 255, 136, 0.08);
   position: relative;
   overflow: hidden;
   padding: 20px;
   margin-bottom: 15px;
+  transition: all 0.2s;
+}
+
+.section:hover {
+  box-shadow: 0 0 15px var(--secondary-color), inset 0 0 10px rgba(0, 255, 136, 0.1);
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--main-color), transparent);
+  animation: scanline 3s linear infinite;
 }
 
 .section-header {
   color: var(--main-color);
-  font-size: 18px;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 800;
   margin-bottom: 15px;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   border-bottom: 1px solid var(--main-color);
   padding-bottom: 8px;
+  text-shadow: 0 0 8px var(--main-color);
+  position: relative;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--main-color);
+  box-shadow: 0 0 8px var(--main-color);
 }
 
 .profile-header {
@@ -156,16 +255,23 @@ body {
 }
 
 .profile-image {
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
-  border: 3px solid #00ff88 !important;
+  border: 2px solid #00ff88 !important;
   background: #001100;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
+  box-shadow: 0 0 20px var(--secondary-color);
+  transition: all 0.3s;
+}
+
+.profile-image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px var(--secondary-color);
 }
 
 .profile-image img {
@@ -179,6 +285,16 @@ body {
     saturate(2) 
     brightness(0.9) 
     contrast(1.2);
+  transition: all 0.3s;
+}
+
+.profile-image:hover img {
+  filter: 
+    sepia(0.6) 
+    hue-rotate(60deg) 
+    saturate(2.5) 
+    brightness(1) 
+    contrast(1.3);
 }
 
 .profile-image::before {
@@ -232,113 +348,89 @@ body {
   pointer-events: none;
 }
 
-/* VHS Scanlines Effect */
-.vhs-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.03) 0px,
-      rgba(0, 0, 0, 0.03) 1px,
-      transparent 1px,
-      transparent 2px
-    );
-  background-size: 100% 4px;
-  z-index: 3;
-  pointer-events: none;
-  animation: scanline 1.5s linear infinite;
-  border-radius: 50%;
-  display: none !important;
-}
-
-.vhs-noise {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    radial-gradient(circle at 20% 30%, rgba(0, 255, 136, 0.05) 0%, transparent 2%),
-    radial-gradient(circle at 80% 70%, rgba(0, 255, 136, 0.05) 0%, transparent 2%),
-    radial-gradient(circle at 40% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 2%);
-  background-size: 200% 200%, 150% 150%, 180% 180%;
-  z-index: 4;
-  pointer-events: none;
-  opacity: 0.4;
-  animation: noise 0.3s infinite;
-  border-radius: 50%;
-  display: none !important;
-}
-
-.vhs-glitch {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 49%,
-    rgba(0, 255, 136, 0.1) 50%,
-    transparent 51%
-  );
-  background-size: 5px 100%;
-  z-index: 5;
-  pointer-events: none;
-  opacity: 0.3;
-  mix-blend-mode: overlay;
-  border-radius: 50%;
-  display: none !important;
-}
-
 .profile-info {
   color: var(--main-color);
   text-align: center;
 }
 
 .profile-name {
-  font-size: 24px;
-  font-weight: 900;
-  margin-bottom: 5px;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 8px var(--main-color);
+  background: linear-gradient(90deg, var(--main-color), #00ccff, var(--main-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shimmer-text 3s linear infinite;
 }
 
 .profile-title {
-  font-size: 14px;
+  font-size: 12px;
   margin-bottom: 10px;
   opacity: 0.9;
+  position: relative;
+  display: inline-block;
+}
+
+.profile-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--main-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.profile-header:hover .profile-title::after {
+  transform: scaleX(1);
 }
 
 .profile-description {
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.6;
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto 15px;
+  text-align: justify;
 }
 
 .status-bar {
   display: flex;
   justify-content: center;
-  padding: 8px 15px;
+  padding: 8px 12px;
   color: var(--main-color);
   font-size: 10px;
-  margin-top: 10px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  margin-top: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
   background: #001100;
   border-top: 1px solid var(--main-color);
   width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+  animation: shimmer 4s infinite;
 }
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
 }
 
 .info-item {
@@ -346,47 +438,128 @@ body {
   border: 1px solid var(--main-color);
   padding: 15px;
   text-align: center;
-  transition: all 0.3s;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.info-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+  transition: left 0.3s;
+}
+
+.info-item:hover::before {
+  left: 100%;
 }
 
 .info-item:hover {
   background: var(--secondary-color);
   transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 255, 136, 0.25);
 }
 
 .info-label {
   color: var(--main-color);
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 10px;
+  font-weight: 700;
   margin-bottom: 5px;
   text-transform: uppercase;
+  letter-spacing: 0.8px;
 }
 
 .info-value {
   color: var(--main-color);
-  font-size: 14px;
-  font-weight: 900;
+  font-size: 12px;
+  font-weight: 800;
+  text-shadow: 0 0 5px var(--main-color);
 }
 
 .hobby-description {
   color: var(--main-color);
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: 10px;
+  line-height: 1.5;
   margin-top: 10px;
-  text-align: left;
+  text-align: justify;
+  padding: 8px;
+  background: rgba(0, 255, 136, 0.05);
+  border-left: 2px solid var(--main-color);
+}
+
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.skill-item {
+  margin-bottom: 12px;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.skill-name {
+  color: var(--main-color);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.skill-percentage {
+  color: var(--main-color);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.skill-bar {
+  height: 5px;
+  background: #001100;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-progress {
+  height: 100%;
+  background: var(--main-color);
+  border-radius: 3px;
+  width: 0;
+  transition: width 1s ease-in-out;
+  position: relative;
+  box-shadow: 0 0 4px var(--main-color);
+}
+
+.skill-progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 2s infinite;
 }
 
 .player-container {
   width: 100%;
   background: #000;
-  border: 2px solid var(--main-color);
-  box-shadow: 0 0 10px var(--secondary-color);
+  border: 1px solid var(--main-color);
+  box-shadow: 0 0 10px var(--secondary-color), inset 0 0 8px rgba(0, 255, 136, 0.08);
   position: relative;
   overflow: hidden;
 }
 
 .visual-display {
-  height: 100px;
+  height: 90px;
   background: #000;
   position: relative;
   border-bottom: 1px solid var(--main-color);
@@ -404,26 +577,29 @@ body {
 
 .metadata {
   position: absolute;
-  bottom: 5px;
-  left: 8px;
+  bottom: 6px;
+  left: 10px;
   color: var(--main-color);
   font-size: 10px;
-  width: calc(100% - 16px);
-  line-height: 1.2;
+  width: calc(100% - 20px);
+  line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   z-index: 2;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.5px;
+  text-shadow: 0 0 5px var(--main-color);
 }
 
 .progress-container {
-  height: 3px;
+  height: 4px;
   background: #001100;
-  margin: 0 8px;
+  margin: 0 10px;
   position: relative;
   cursor: pointer;
+  border-radius: 2px;
+  overflow: hidden;
 }
 
 .progress-bar {
@@ -432,19 +608,23 @@ body {
   background: var(--main-color);
   transition: width 0.1s linear;
   position: relative;
+  border-radius: 2px;
+  box-shadow: 0 0 4px var(--main-color);
 }
 
 .progress-bar::after {
   content: '';
   position: absolute;
-  right: -3px;
+  right: -4px;
   top: 50%;
   transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background: var(--main-color);
+  border-radius: 50%;
   opacity: 0;
   transition: opacity 0.2s;
+  box-shadow: 0 0 4px var(--main-color);
 }
 
 .progress-container:hover .progress-bar::after {
@@ -453,7 +633,7 @@ body {
 
 .controls {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: auto;
   gap: 4px;
   padding: 8px;
@@ -465,7 +645,7 @@ body {
   background: #001100;
   border: 1px solid var(--main-color);
   color: var(--main-color);
-  padding: 5px 3px;
+  padding: 6px 3px;
   font-size: 9px;
   cursor: pointer;
   transition: all 0.2s;
@@ -474,44 +654,63 @@ body {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.5px;
+}
+
+.retro-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+  transition: left 0.3s;
+}
+
+.retro-btn:hover::before {
+  left: 100%;
 }
 
 .retro-btn:hover {
   background: var(--main-color);
   color: #000;
+  text-shadow: 0 0 4px #000;
 }
 
 .volume-control {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 0 8px;
-  margin-top: 5px;
+  gap: 6px;
+  padding: 0 10px;
+  margin-top: 6px;
 }
 
 .volume-control input {
   flex: 1;
-  height: 2px;
+  height: 3px;
   background: #001100;
   outline: none;
   -webkit-appearance: none;
+  border-radius: 2px;
 }
 
 .volume-control input::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background: var(--main-color);
   cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 4px var(--main-color);
 }
 
 .volume-control span {
-  font-size: 7px;
+  font-size: 8px;
   color: var(--main-color);
-  min-width: 20px;
-  font-weight: 800;
+  min-width: 22px;
+  font-weight: 700;
 }
 
 .playlist-container {
@@ -519,12 +718,13 @@ body {
   height: 150px;
   background: var(--bg-color);
   border: 1px solid var(--main-color);
-  margin: 5px 0;
+  margin: 10px 0;
   overflow: hidden;
+  box-shadow: inset 0 0 8px rgba(0, 255, 136, 0.08);
 }
 
 .playlist-header {
-  padding: 5px;
+  padding: 6px;
   background: #001100;
   border-bottom: 1px solid var(--main-color);
   font-size: 9px;
@@ -534,63 +734,67 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.5px;
+  position: relative;
+}
+
+.playlist-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+  animation: shimmer 5s infinite;
 }
 
 .playlist-items {
-  height: calc(100% - 24px);
+  height: calc(100% - 26px);
   overflow-y: auto;
-  padding: 3px;
+  padding: 4px;
 }
 
 .playlist-item {
-  padding: 4px 5px;
+  padding: 5px 6px;
   font-size: 9px;
   color: var(--main-color);
   cursor: pointer;
   transition: all 0.2s;
-  margin: 1px 0;
+  margin: 2px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: flex;
   align-items: center;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.3px;
+  border-left: 2px solid transparent;
 }
 
 .playlist-item::before {
   content: '▶';
-  margin-right: 5px;
+  margin-right: 6px;
   font-size: 6px;
   opacity: 0.7;
 }
 
 .playlist-item:hover {
   background: var(--secondary-color);
+  border-left: 2px solid var(--main-color);
+  padding-left: 8px;
 }
 
 .playlist-item.active {
   background: var(--main-color);
   color: #000;
+  border-left: 2px solid #000;
 }
 
 .playlist-item.active::before {
   content: '⏸';
   opacity: 1;
-}
-
-.playlist-items::-webkit-scrollbar {
-  width: 3px;
-}
-
-.playlist-items::-webkit-scrollbar-track {
-  background: #000;
-}
-
-.playlist-items::-webkit-scrollbar-thumb {
-  background: var(--main-color);
 }
 
 .loading-dot {
@@ -611,7 +815,7 @@ body {
 @keyframes slideUp {
   from { 
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px);
   }
   to { 
     opacity: 1;
@@ -645,19 +849,29 @@ body {
   100% { background-position: 100% 100%, 100% 100%, 100% 100%; }
 }
 
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes shimmer-text {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
 .pulsing {
   animation: pulse 2s infinite;
 }
 
 .notification-container {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
+  bottom: 12px;
+  right: 12px;
   z-index: 10000;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  max-width: 200px;
+  gap: 6px;
+  max-width: 220px;
 }
 
 .notification {
@@ -666,11 +880,24 @@ body {
   color: var(--main-color);
   padding: 8px 10px;
   font-size: 9px;
-  font-weight: 800;
-  animation: slideInRight 0.3s ease-out;
+  font-weight: 700;
+  animation: slideInRight 0.2s ease-out;
   display: flex;
   align-items: center;
   gap: 6px;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.notification::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--main-color);
 }
 
 .notification.error {
@@ -678,9 +905,17 @@ body {
   color: #ff4444;
 }
 
+.notification.error::before {
+  background: #ff4444;
+}
+
 .notification.success {
   border-color: #00ff88;
   color: #00ff88;
+}
+
+.notification.success::before {
+  background: #00ff88;
 }
 
 @keyframes slideInRight {
@@ -693,13 +928,170 @@ body {
   to { transform: translateX(100%); opacity: 0; }
 }
 
-@media (max-width: 768px) {
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.contact-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--secondary-color);
+  transform: scale(0);
+  transition: transform 0.2s;
+  border-radius: 50%;
+}
+
+.contact-link:hover::before {
+  transform: scale(1);
+}
+
+.contact-link i {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-link:hover {
+  color: #000;
+  box-shadow: 0 0 10px var(--main-color);
+}
+
+.terminal-output {
+  background: #001100;
+  border: 1px solid var(--main-color);
+  padding: 10px;
+  margin-top: 12px;
+  font-family: monospace;
+  font-size: 10px;
+  color: var(--main-color);
+  max-height: 120px;
+  overflow-y: auto;
+  line-height: 1.4;
+}
+
+.terminal-line {
+  margin-bottom: 4px;
+}
+
+.terminal-prompt {
+  color: var(--accent-color);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.stat-item {
+  background: #001100;
+  border: 1px solid var(--main-color);
+  padding: 10px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.stat-value {
+  color: var(--main-color);
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 3px;
+  text-shadow: 0 0 5px var(--main-color);
+}
+
+.stat-label {
+  color: var(--main-color);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quick-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.action-btn {
+  background: #001100;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  padding: 6px 10px;
+  font-size: 9px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.action-btn:hover {
+  background: var(--main-color);
+  color: #000;
+}
+
+.system-monitor {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 8px;
+  background: #001100;
+  border: 1px solid var(--main-color);
+}
+
+.monitor-item {
+  text-align: center;
+  flex: 1;
+}
+
+.monitor-value {
+  color: var(--main-color);
+  font-size: 10px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.monitor-label {
+  color: var(--main-color);
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
   body {
     padding-top: 60px;
+    font-size: 11px;
   }
   
   .container {
     max-width: 95%;
+    gap: 10px;
   }
   
   .header-container {
@@ -710,11 +1102,15 @@ body {
   
   .tabs {
     flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
   }
   
   .tab-btn {
     flex: 1;
-    min-width: 120px;
+    min-width: 90px;
+    padding: 8px 10px;
+    font-size: 10px;
   }
   
   .info-grid {
@@ -722,35 +1118,26 @@ body {
   }
   
   .profile-image {
-    width: 180px;
-    height: 180px;
+    width: 140px;
+    height: 140px;
   }
   
   .notification-container {
-    bottom: 10px;
-    right: 5px;
+    bottom: 8px;
+    right: 8px;
     max-width: 180px;
   }
-}
-
-@media (max-width: 480px) {
-  .header-container {
-    flex-direction: column;
-    gap: 10px;
+  
+  .controls {
+    grid-template-columns: repeat(3, 1fr);
   }
   
-  .tabs {
-    width: 100%;
+  .profile-name {
+    font-size: 20px;
   }
   
-  .tab-btn {
-    padding: 8px 12px;
-    font-size: 10px;
-  }
-  
-  .datetime-container {
-    font-size: 9px;
-    padding: 6px 10px;
+  .section {
+    padding: 15px;
   }
 }
 </style>
@@ -763,9 +1150,10 @@ body {
 <div class="container">
   <div class="header-container">
     <div class="tabs">
-      <button class="tab-btn active" data-tab="home">Home</button>
-      <button class="tab-btn" data-tab="personal">Personal</button>
-      <button class="tab-btn" data-tab="music">Music</button>
+      <button class="tab-btn active" data-tab="home"><i class="fas fa-home"></i> HOME</button>
+      <button class="tab-btn" data-tab="personal"><i class="fas fa-user"></i> PERSONAL</button>
+      <button class="tab-btn" data-tab="stats"><i class="fas fa-chart-bar"></i> STATS</button>
+      <button class="tab-btn" data-tab="music"><i class="fas fa-music"></i> MUSIC</button>
     </div>
     
     <div class="datetime-container">
@@ -780,22 +1168,72 @@ body {
       <div class="profile-header">
         <div class="profile-image">
           <img src="https://xatimg.com/image/V9DIQ0j8DKo4.png" alt="PAVLY EMAD">
-          <div class="vhs-overlay"></div>
-          <div class="vhs-noise"></div>
-          <div class="vhs-glitch"></div>
         </div>
         <div class="profile-info">
           <h1 class="profile-name">PAVLY EMAD</h1>
           <p class="profile-title">UBER DRIVER & GAMING ENTHUSIAST</p>
           <p class="profile-description">
-            Welcome to my personal space! I'm a Texas-based Uber driver with a passion for gaming, 
-            especially League of Legends. When I'm not driving around the beautiful state of Texas, 
-            you'll find me immersed in the gaming world or exploring new music.
+            Texas-based Uber driver with a passion for gaming, especially League of Legends. When not driving, immersed in gaming or exploring music. Dedicated to providing excellent service and climbing the ranked ladder.
           </p>
+          <div class="contact-links">
+            <a href="#" class="contact-link"><i class="fas fa-envelope"></i></a>
+            <a href="#" class="contact-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="contact-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="contact-link"><i class="fab fa-linkedin"></i></a>
+          </div>
         </div>
       </div>
       <div class="status-bar">
-        <span>STATUS: <span class="loading-dot" id="status">GOD IS LOVE</span></span>
+        <span>STATUS: <span class="loading-dot" id="status">ONLINE</span> | SYSTEM: <span id="system-status">OPERATIONAL</span></span>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2 class="section-header">Quick Stats</h2>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value">4.97</div>
+          <div class="stat-label">RATING</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">1500+</div>
+          <div class="stat-label">TRIPS</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">GOLD I</div>
+          <div class="stat-label">RANK</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2000+</div>
+          <div class="stat-label">HOURS</div>
+        </div>
+      </div>
+      <div class="quick-actions">
+        <button class="action-btn" id="action-contact">CONTACT</button>
+        <button class="action-btn" id="action-music">MUSIC</button>
+        <button class="action-btn" id="action-gaming">GAMING</button>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2 class="section-header">System Monitor</h2>
+      <div class="system-monitor">
+        <div class="monitor-item">
+          <div class="monitor-value" id="cpu-usage">24%</div>
+          <div class="monitor-label">CPU</div>
+        </div>
+        <div class="monitor-item">
+          <div class="monitor-value" id="memory-usage">62%</div>
+          <div class="monitor-label">MEMORY</div>
+        </div>
+        <div class="monitor-item">
+          <div class="monitor-value" id="network-status">ONLINE</div>
+          <div class="monitor-label">NETWORK</div>
+        </div>
+        <div class="monitor-item">
+          <div class="monitor-value" id="storage-free">78%</div>
+          <div class="monitor-label">STORAGE</div>
+        </div>
       </div>
     </div>
   </div>
@@ -803,11 +1241,11 @@ body {
   <!-- Personal Tab -->
   <div class="tab-content" id="personal">
     <div class="section">
-      <h2 class="section-header">Personal Information</h2>
+      <h2 class="section-header">Personal Info</h2>
       <div class="info-grid">
         <div class="info-item">
           <div class="info-label">Location</div>
-          <div class="info-value">TEXAS</div>
+          <div class="info-value">TEXAS, USA</div>
         </div>
         <div class="info-item">
           <div class="info-label">Age</div>
@@ -821,15 +1259,128 @@ body {
           <div class="info-label">Name</div>
           <div class="info-value">BOLA EMAD</div>
         </div>
-        <div class="info-item" style="grid-column: 1 / -1;">
-          <div class="info-label">Hobby</div>
-          <div class="info-value">LEAGUE OF LEGENDS</div>
-          <div class="hobby-description">
-            As a dedicated League of Legends enthusiast, I've spent countless hours mastering champions, 
-            strategizing with teammates, and climbing the ranked ladder. The game's complexity and 
-            competitive nature keep me engaged and constantly improving my skills. Whether I'm playing 
-            as a support main or trying out new roles, the thrill of outplaying opponents never gets old.
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2 class="section-header">Primary Hobby</h2>
+      <div class="info-item" style="grid-column: 1 / -1;">
+        <div class="info-value">LEAGUE OF LEGENDS</div>
+        <div class="hobby-description">
+          Dedicated LoL enthusiast mastering champions, strategizing, and climbing ranked ladder. Favorite champions: Thresh, Leona, Janna. Currently improving mid-lane gameplay with champions like Ahri and Zed. The game's complexity and competitive nature keep me engaged and constantly improving my skills.
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-header">Skills</h2>
+      <div class="skills-container">
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">DRIVING</span>
+            <span class="skill-percentage">95%</span>
           </div>
+          <div class="skill-bar">
+            <div class="skill-progress" data-width="95"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">NAVIGATION</span>
+            <span class="skill-percentage">92%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-progress" data-width="92"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">CUSTOMER SERVICE</span>
+            <span class="skill-percentage">88%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-progress" data-width="88"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">LEAGUE OF LEGENDS</span>
+            <span class="skill-percentage">85%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-progress" data-width="85"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">TIME MANAGEMENT</span>
+            <span class="skill-percentage">90%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-progress" data-width="90"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header">
+            <span class="skill-name">ROUTE OPTIMIZATION</span>
+            <span class="skill-percentage">87%</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-progress" data-width="87"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Tab -->
+  <div class="tab-content" id="stats">
+    <div class="section">
+      <h2 class="section-header">Performance Stats</h2>
+      <div class="terminal-output">
+        <div class="terminal-line"><span class="terminal-prompt">>></span> UBER PERFORMANCE METRICS</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Acceptance Rate: 94%</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Completion Rate: 99%</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> On-time Arrival: 96%</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Customer Rating: 4.97/5.00</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Total Trips: 1527</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Total Earnings: $42,380</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Top Earnings Day: $327</div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2 class="section-header">Gaming Stats</h2>
+      <div class="terminal-output">
+        <div class="terminal-line"><span class="terminal-prompt">>></span> LEAGUE OF LEGENDS STATS</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Current Rank: Gold I</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Win Rate: 54.3%</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Main Role: Support</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Top Champions: Thresh, Leona, Janna</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Total Playtime: 2147h 32m</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> K/D/A Ratio: 2.8/5.1/12.4</div>
+        <div class="terminal-line"><span class="terminal-prompt">>></span> Highest Rank Achieved: Platinum IV</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-header">Daily Activity</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">DRIVING HRS</div>
+          <div class="info-value">6.5</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">GAMING HRS</div>
+          <div class="info-value">3.2</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">MUSIC HRS</div>
+          <div class="info-value">2.8</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">PRODUCTIVITY</div>
+          <div class="info-value">87%</div>
         </div>
       </div>
     </div>
@@ -843,7 +1394,7 @@ body {
         <div class="visual-display">
           <canvas id="visualizer"></canvas>
           <div class="metadata">
-            <div id="track-title">NEON MUSIC PLAYER</div>
+            <div id="track-title">NEON MUSIC PLAYER - READY</div>
             <div id="time-display">00:00 / 00:00</div>
           </div>
         </div>
@@ -853,9 +1404,11 @@ body {
         </div>
 
         <div class="controls">
+          <button class="retro-btn" data-action="shuffle"><i class="fas fa-random"></i></button>
           <button class="retro-btn" data-action="prev">⏮ PREV</button>
           <button class="retro-btn pulsing" data-action="play" id="play-btn">▶ PLAY</button>
           <button class="retro-btn" data-action="next">NEXT ⏭</button>
+          <button class="retro-btn" data-action="repeat"><i class="fas fa-redo"></i></button>
         </div>
 
         <div class="volume-control">
@@ -868,6 +1421,7 @@ body {
       <div class="playlist-container">
         <div class="playlist-header">
           <span>PLAYLIST - 22 TRACKS</span>
+          <span id="playlist-status">LOADED</span>
         </div>
         <div class="playlist-items" id="playlist-items">
           <!-- Will be populated by JavaScript -->
@@ -877,14 +1431,36 @@ body {
   </div>
 </div>
 
+<!-- عناصر صوتية مخفية للتأثيرات -->
+<audio id="click-sound" preload="auto">
+  <source src="https://assets.mixkit.co/active_storage/sfx/241/241-preview.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="hover-sound" preload="auto">
+  <source src="https://assets.mixkit.co/active_storage/sfx/250/250-preview.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="tab-sound" preload="auto">
+  <source src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-// Tab functionality - Fixed positioning
+// تأثيرات صوتية
+const clickSound = document.getElementById('click-sound');
+const hoverSound = document.getElementById('hover-sound');
+const tabSound = document.getElementById('tab-sound');
+
+// Tab functionality
 function initializeTabs() {
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
   
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      // تشغيل صوت النقر
+      tabSound.currentTime = 0;
+      tabSound.play().catch(e => console.log("Audio play failed:", e));
+      
       // Remove active class from all buttons and contents
       tabBtns.forEach(b => b.classList.remove('active'));
       tabContents.forEach(c => c.classList.remove('active'));
@@ -895,27 +1471,45 @@ function initializeTabs() {
       document.getElementById(tabId).classList.add('active');
       
       // Show notification when switching tabs
-      showNotification(`Switched to ${tabId.toUpperCase()} tab`, 'info', 1500);
+      showNotification(`${tabId.toUpperCase()} MODULE`, 'info', 1500);
+      
+      // Animate skill bars when skills tab is opened
+      if (tabId === 'personal') {
+        setTimeout(animateSkillBars, 300);
+      }
+    });
+    
+    // إضافة تأثير صوتي عند التمرير على الأزرار
+    btn.addEventListener('mouseenter', () => {
+      hoverSound.currentTime = 0;
+      hoverSound.volume = 0.3;
+      hoverSound.play().catch(e => console.log("Audio play failed:", e));
     });
   });
 }
 
-// نظام الإشعارات
-function showNotification(message, type = 'info', duration = 3000) {
+// Notification system
+function showNotification(message, type = 'info', duration = 2000) {
   const container = document.getElementById('notificationContainer');
   const notification = document.createElement('div');
   notification.className = `notification ${type}`;
-  notification.textContent = message;
+  
+  // Add icon based on type
+  let icon = 'info-circle';
+  if (type === 'error') icon = 'exclamation-triangle';
+  if (type === 'success') icon = 'check-circle';
+  
+  notification.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
   
   container.appendChild(notification);
   
   setTimeout(() => {
-    notification.style.animation = 'slideOutRight 0.3s ease-in';
-    setTimeout(() => notification.remove(), 300);
+    notification.style.animation = 'slideOutRight 0.2s ease-in';
+    setTimeout(() => notification.remove(), 200);
   }, duration);
 }
 
-// خلفية المصفوفة
+// Matrix background
 function initializeMatrixBackground() {
   const canvas = document.getElementById('matrixCanvas');
   const ctx = canvas.getContext('2d');
@@ -936,7 +1530,7 @@ function initializeMatrixBackground() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
-    ctx.font = `${fontSize}px monospace`;
+    ctx.font = `bold ${fontSize}px monospace`;
     
     for (let i = 0; i < drops.length; i++) {
       if (Math.random() > 0.975) {
@@ -951,13 +1545,81 @@ function initializeMatrixBackground() {
   setInterval(drawMatrix, 40);
 }
 
-// تحديث التاريخ والوقت
+// Update date and time
 function updateDateTime() {
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
   document.getElementById('current-date').textContent = dateStr;
   const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
   document.getElementById('current-time').textContent = timeStr;
+}
+
+// Animate skill bars
+function animateSkillBars() {
+  const skillBars = document.querySelectorAll('.skill-progress');
+  skillBars.forEach(bar => {
+    const width = bar.getAttribute('data-width');
+    bar.style.width = `${width}%`;
+  });
+}
+
+// Quick action buttons
+function setupQuickActions() {
+  const actionButtons = document.querySelectorAll('.action-btn');
+  
+  actionButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // تشغيل صوت النقر
+      clickSound.currentTime = 0;
+      clickSound.play().catch(e => console.log("Audio play failed:", e));
+      
+      const action = btn.id.replace('action-', '');
+      switch(action) {
+        case 'contact':
+          showNotification('CONTACT MODULE ACTIVATED', 'info', 1500);
+          break;
+        case 'music':
+          // Switch to music tab
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          
+          document.querySelector('[data-tab="music"]').classList.add('active');
+          document.getElementById('music').classList.add('active');
+          
+          showNotification('MUSIC PLAYER ACTIVATED', 'info', 1500);
+          break;
+        case 'gaming':
+          showNotification('GAMING STATS DISPLAYED', 'info', 1500);
+          break;
+      }
+    });
+    
+    // إضافة تأثير صوتي عند التمرير
+    btn.addEventListener('mouseenter', () => {
+      hoverSound.currentTime = 0;
+      hoverSound.volume = 0.3;
+      hoverSound.play().catch(e => console.log("Audio play failed:", e));
+    });
+  });
+}
+
+// System monitor simulation
+function initializeSystemMonitor() {
+  setInterval(() => {
+    // محاكاة تغيير قياسات النظام
+    const cpu = document.getElementById('cpu-usage');
+    const memory = document.getElementById('memory-usage');
+    const storage = document.getElementById('storage-free');
+    
+    // توليد قيم عشوائية واقعية
+    const newCpu = Math.floor(Math.random() * 20) + 20; // 20-40%
+    const newMemory = Math.floor(Math.random() * 20) + 50; // 50-70%
+    const newStorage = Math.floor(Math.random() * 10) + 70; // 70-80%
+    
+    cpu.textContent = `${newCpu}%`;
+    memory.textContent = `${newMemory}%`;
+    storage.textContent = `${newStorage}%`;
+  }, 5000);
 }
 
 // Music Player Functionality
@@ -967,6 +1629,8 @@ let currentTrackIndex = 0;
 let isDraggingProgress = false;
 let audioContext, analyser, source;
 let visualizerAnimationId;
+let isShuffled = false;
+let isRepeating = false;
 
 audio.crossOrigin = "anonymous";
 audio.preload = "metadata";
@@ -981,19 +1645,7 @@ const tracks = [
   { url: "https://audio.jukehost.co.uk/myCPt9ZjRHciiM0mPRWvGNvrv3UvZVQf", title: "Akhbark Eih" },
   { url: "https://audio.jukehost.co.uk/SgVafxNk6kzCfo5Iz3deO4JKpEeoKMwp", title: "Mali" },
   { url: "https://audio.jukehost.co.uk/M6UPHVWra0iW7wIS6PxfdbkvUv9MzlYx", title: "Sabny W Rah" },
-  { url: "https://audio.jukehost.co.uk/9VYjs6t6ssSZcFmdjCpiHUt7KjnGc1VJ", title: "Bano Bano" },
-  { url: "https://audio.jukehost.co.uk/NsUgVNeUKz4Yi0rkBV3ML3AeYddJMv4C", title: "Asmrani" },
-  { url: "https://audio.jukehost.co.uk/Lsj8s37oWEChvBysiCWekYJJlqlCXvax", title: "Kol Elly Fat" },
-  { url: "https://audio.jukehost.co.uk/stsKQAUsqa1nMqfFEyIZBDquOhyaKgrc", title: "Kol Sana Wenta Taib" },
-  { url: "https://audio.jukehost.co.uk/R6hp6mTYhkkXlrlrx4tPia0r1adxZjon", title: "Wnghna" },
-  { url: "https://audio.jukehost.co.uk/tzptUH0si7w8zecQ8aLMau4Gzvk35bJ3", title: "Eltofan" },
-  { url: "https://audio.jukehost.co.uk/570CFW5i5OyvE9pDmNYaoLsfXWoWW7s3", title: "Lolak Habiby" },
-  { url: "https://audio.jukehost.co.uk/5xfVZ0UBNnE8G6Y0uS5gW0osyli4Mr6A", title: "Ma Ttghiri" },
-  { url: "https://audio.jukehost.co.uk/wMLygBX1aVYJgx7Qnf1EAJJiDgSy0o2j", title: "Awsflk" },
-  { url: "https://audio.jukehost.co.uk/fwp855wgunbmUvTdPLbZldVI4lt5jhJ6", title: "Elly Gai Ahla" },
-  { url: "https://audio.jukehost.co.uk/yahATprp8RrM9Wh4OPHxhFqjv0Zn0780", title: "Enti Elly 3mlti" },
-  { url: "https://audio.jukehost.co.uk/gVvKZJ6qgJdzJWNNuQJf2i8ZQjniADL7", title: "Eskoti" },
-  { url: "https://audio.jukehost.co.uk/8WYB3itQz2bLqCT3ZugjRo0RFPvLjCRD", title: "Ya Eini" }
+  { url: "https://audio.jukehost.co.uk/9VYjs6t6ssSZcFmdjCpiHUt7KjnGc1VJ", title: "Bano Bano" }
 ];
 
 function setupAudioSystem() {
@@ -1018,7 +1670,12 @@ function initializePlaylist() {
     item.className = 'playlist-item';
     item.textContent = track.title;
     item.dataset.index = index;
-    item.addEventListener('click', () => { loadTrack(index); });
+    item.addEventListener('click', () => { 
+      // تشغيل صوت النقر
+      clickSound.currentTime = 0;
+      clickSound.play().catch(e => console.log("Audio play failed:", e));
+      loadTrack(index); 
+    });
     playlistItems.appendChild(item);
   });
   updatePlaylist();
@@ -1038,7 +1695,7 @@ function initAudioContext() {
       source = audioContext.createMediaElementSource(audio);
       source.connect(analyser);
       analyser.connect(audioContext.destination);
-      analyser.fftSize = 256;
+      analyser.fftSize = 128;
     } catch (e) {
       console.error('Audio Context Error:', e);
       showNotification('Audio effects unavailable', 'error');
@@ -1094,6 +1751,10 @@ function updateVisualizer() {
 }
 
 function togglePlay() {
+  // تشغيل صوت النقر
+  clickSound.currentTime = 0;
+  clickSound.play().catch(e => console.log("Audio play failed:", e));
+  
   initAudioContext();
   if (isPlaying) {
     audio.pause();
@@ -1131,7 +1792,7 @@ function loadTrack(index) {
   initAudioContext();
   audio.load();
   updatePlaylist();
-  showNotification(`Loaded: ${tracks[index].title}`, 'info', 2000);
+  showNotification(`LOADED: ${tracks[index].title}`, 'info', 1500);
 }
 
 function updateProgress() {
@@ -1176,11 +1837,53 @@ function setupProgressControl() {
 }
 
 function getNextTrack() {
+  if (isShuffled) {
+    return Math.floor(Math.random() * tracks.length);
+  }
   return (currentTrackIndex + 1) % tracks.length;
 }
 
 function getPrevTrack() {
+  if (isShuffled) {
+    return Math.floor(Math.random() * tracks.length);
+  }
   return (currentTrackIndex - 1 + tracks.length) % tracks.length;
+}
+
+function toggleShuffle() {
+  // تشغيل صوت النقر
+  clickSound.currentTime = 0;
+  clickSound.play().catch(e => console.log("Audio play failed:", e));
+  
+  isShuffled = !isShuffled;
+  const shuffleBtn = document.querySelector('[data-action="shuffle"]');
+  if (isShuffled) {
+    shuffleBtn.style.background = 'var(--main-color)';
+    shuffleBtn.style.color = '#000';
+    showNotification('SHUFFLE: ON', 'info', 1000);
+  } else {
+    shuffleBtn.style.background = '#001100';
+    shuffleBtn.style.color = 'var(--main-color)';
+    showNotification('SHUFFLE: OFF', 'info', 1000);
+  }
+}
+
+function toggleRepeat() {
+  // تشغيل صوت النقر
+  clickSound.currentTime = 0;
+  clickSound.play().catch(e => console.log("Audio play failed:", e));
+  
+  isRepeating = !isRepeating;
+  const repeatBtn = document.querySelector('[data-action="repeat"]');
+  if (isRepeating) {
+    repeatBtn.style.background = 'var(--main-color)';
+    repeatBtn.style.color = '#000';
+    showNotification('REPEAT: ON', 'info', 1000);
+  } else {
+    repeatBtn.style.background = '#001100';
+    repeatBtn.style.color = 'var(--main-color)';
+    showNotification('REPEAT: OFF', 'info', 1000);
+  }
 }
 
 function initializeMusicPlayer() {
@@ -1195,43 +1898,64 @@ function initializeMusicPlayer() {
         case 'play': togglePlay(); break;
         case 'prev': loadTrack(getPrevTrack()); break;
         case 'next': loadTrack(getNextTrack()); break;
+        case 'shuffle': toggleShuffle(); break;
+        case 'repeat': toggleRepeat(); break;
       }
+    });
+    
+    // إضافة تأثير صوتي عند التمرير على أزرار الموسيقى
+    btn.addEventListener('mouseenter', () => {
+      hoverSound.currentTime = 0;
+      hoverSound.volume = 0.3;
+      hoverSound.play().catch(e => console.log("Audio play failed:", e));
     });
   });
 
   audio.addEventListener('timeupdate', updateProgress);
   audio.addEventListener('ended', () => {
-    const nextTrackIndex = getNextTrack();
-    loadTrack(nextTrackIndex);
-    setTimeout(() => {
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(err => console.error('Autoplay failed after track ended:', err));
-      }
-    }, 150);
+    if (isRepeating) {
+      loadTrack(currentTrackIndex);
+      setTimeout(() => {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => console.error('Autoplay failed after track ended:', err));
+        }
+      }, 100);
+    } else {
+      const nextTrackIndex = getNextTrack();
+      loadTrack(nextTrackIndex);
+      setTimeout(() => {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => console.error('Autoplay failed after track ended:', err));
+        }
+      }, 100);
+    }
   });
   document.getElementById('volume-slider').addEventListener('input', updateVolume);
   
   loadTrack(0);
 }
 
-// تهيئة التطبيق
+// Initialize the application
 function initializeApp() {
   initializeTabs();
   initializeMatrixBackground();
   initializeMusicPlayer();
+  setupQuickActions();
+  initializeSystemMonitor();
   
-  // تحديث التاريخ والوقت
+  // Update date and time
   setInterval(updateDateTime, 1000);
   updateDateTime();
   
-  // عرض إشعار ترحيب
+  // Show welcome notification
   setTimeout(() => {
-    showNotification('Welcome to PAVLY EMAD Portfolio!', 'success', 4000);
-  }, 1000);
+    showNotification('ENHANCED PORTFOLIO LOADED', 'success', 3000);
+  }, 800);
 }
 
-// بدء التطبيق عند تحميل الصفحة
+// Start the application when the page loads
 window.addEventListener('load', initializeApp);
 </script>
 </body>
