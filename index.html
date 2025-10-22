@@ -3,16 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bola Emad | Digital Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <title>POLA EMAD | Night Drive Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --main-color: #00ff88;
-            --bg-color: #001a00;
-            --secondary-color: #00ff8833;
-            --accent-color: #00ccff;
+            --main-color: #00a8ff;
+            --bg-color: #0a0f1c;
+            --secondary-color: #00a8ff33;
+            --accent-color: #4cdfff;
             --terminal-font: 'Orbitron', monospace;
-            --card-bg: rgba(0, 17, 0, 0.7);
+            --card-bg: rgba(10, 15, 28, 0.7);
+            --success-color: #00ff88;
+            --warning-color: #ffaa00;
+            --error-color: #ff4444;
+            --text-color: #ffffff;
+        }
+
+        /* Light Theme Variables */
+        .light-theme {
+            --main-color: #0066cc;
+            --bg-color: #f0f5ff;
+            --secondary-color: #0066cc33;
+            --accent-color: #0088ff;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #222222;
         }
 
         * {
@@ -28,13 +43,15 @@
         body {
             background: var(--bg-color);
             font-family: var(--terminal-font);
-            color: var(--main-color);
+            color: var(--text-color);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            transition: all 0.5s ease;
+            cursor: default;
         }
 
-        /* Green Animated Background */
+        /* Clean Background */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -43,15 +60,51 @@
             height: 100%;
             z-index: -2;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 255, 136, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(0, 255, 136, 0.07) 0%, transparent 50%);
-            animation: bgPulse 8s ease-in-out infinite;
+                radial-gradient(circle at 20% 80%, rgba(0, 168, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 168, 255, 0.1) 0%, transparent 50%);
         }
 
-        @keyframes bgPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+        .light-theme .animated-bg {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 204, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 102, 204, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 102, 204, 0.1) 0%, transparent 50%);
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--main-color);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 15s infinite linear;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
         }
 
         /* Custom Scrollbar */
@@ -60,8 +113,12 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(0, 17, 0, 0.5);
+            background: rgba(10, 15, 28, 0.5);
             border-radius: 3px;
+        }
+
+        .light-theme ::-webkit-scrollbar-track {
+            background: rgba(0, 102, 204, 0.1);
         }
 
         ::-webkit-scrollbar-thumb {
@@ -74,62 +131,171 @@
             background: var(--accent-color);
         }
 
-        /* Date & Time Display - تم تعديل الموقع */
-        .datetime-display {
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--main-color), var(--accent-color));
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px var(--main-color);
+        }
+
+        /* Notification System */
+        .notification-container {
             position: fixed;
             top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 101;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 350px;
+        }
+
+        .notification {
+            background: rgba(10, 15, 28, 0.9);
+            border: 1px solid var(--main-color);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 0 15px var(--secondary-color);
+            backdrop-filter: blur(5px);
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .light-theme .notification {
+            background: rgba(255, 255, 255, 0.9);
+            color: #222222;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification-icon {
+            font-size: 18px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 168, 255, 0.2);
+        }
+
+        .light-theme .notification-icon {
+            background: rgba(0, 102, 204, 0.2);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .notification-message {
             font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: var(--main-color);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px;
+        }
+
+        /* Date & Time Display */
+        .datetime-display {
+            position: relative;
+            margin: 15px auto 25px;
+            z-index: 101;
+            font-size: 13px;
             text-align: center;
-            background: rgba(0, 17, 0, 0.8);
-            padding: 10px 20px;
+            background: rgba(10, 15, 28, 0.8);
+            padding: 12px 22px;
             border-radius: 15px;
             border: 1px solid var(--main-color);
             box-shadow: 0 0 15px var(--secondary-color);
             backdrop-filter: blur(5px);
             line-height: 1.4;
             width: auto;
-            min-width: 200px;
+            max-width: 220px;
+            font-family: 'Rajdhani', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .datetime-display {
+            background: rgba(255, 255, 255, 0.8);
+            color: #222222;
+        }
+
+        .datetime-display:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px var(--main-color);
         }
 
         .time {
             font-weight: 800;
-            font-size: 14px;
+            font-size: 16px;
             margin-bottom: 2px;
             letter-spacing: 1px;
         }
 
         .date {
             opacity: 0.8;
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: 0.5px;
         }
 
-        /* Navigation - تم تعديل الموقع */
+        /* Navigation */
         .nav-container {
             position: fixed;
-            bottom: 120px; /* تم وضعه أعلى علامة الموسيقى مباشرة */
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
             display: flex;
-            gap: 8px;
-            background: rgba(0, 17, 0, 0.8);
-            padding: 8px 16px;
+            gap: 10px;
+            background: rgba(10, 15, 28, 0.8);
+            padding: 10px 18px;
             border-radius: 30px;
             border: 1px solid var(--main-color);
             box-shadow: 0 0 15px var(--secondary-color);
             backdrop-filter: blur(5px);
         }
 
+        .light-theme .nav-container {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
         .nav-btn {
             background: transparent;
             border: none;
             color: var(--main-color);
-            padding: 8px 16px;
-            font-size: 10px;
+            padding: 10px 18px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
@@ -138,11 +304,13 @@
             border-radius: 20px;
             position: relative;
             overflow: hidden;
+            font-family: 'Rajdhani', sans-serif;
         }
 
         .nav-btn:hover {
             background: var(--secondary-color);
             transform: translateY(-2px);
+            text-shadow: 0 0 8px var(--main-color);
         }
 
         .nav-btn.active {
@@ -151,7 +319,7 @@
             box-shadow: 0 0 10px var(--main-color);
         }
 
-        /* Main Content - تم تعديله ليكون أصغر وأكثر تناسقاً */
+        /* Main Content */
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -180,7 +348,7 @@
             transform: translateY(0);
         }
 
-        /* Home Section */
+        /* Home Section - Clean Profile */
         .home-content {
             display: flex;
             flex-direction: column;
@@ -193,37 +361,65 @@
 
         .hero {
             position: relative;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             width: 100%;
         }
 
-        .hero-icon {
-            font-size: 70px; /* تم تصغير الحجم */
+        .music-icon-container {
+            margin: 0 auto 20px;
+            transition: all 0.5s ease;
+        }
+
+        .music-icon-container:hover {
+            transform: scale(1.05);
+        }
+
+        .music-icon {
+            font-size: 80px;
             color: var(--main-color);
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px var(--secondary-color);
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-8px) scale(1.05); }
-            100% { transform: translateY(0px) scale(1); }
-        }
-
-        .hero-title {
-            font-size: 32px; /* تم تصغير الحجم */
-            font-weight: 900;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
             text-shadow: 0 0 15px var(--secondary-color);
         }
 
+        .hero-title {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px var(--secondary-color);
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .hero-title {
+            text-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
+        }
+
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 2px solid var(--main-color);
+            white-space: nowrap;
+            animation: typing 3s steps(20, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--main-color) }
+        }
+
         .hero-subtitle {
-            font-size: 14px; /* تم تصغير الحجم */
+            font-size: 16px;
             opacity: 0.8;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
         }
 
         .status-bar {
@@ -232,18 +428,31 @@
             left: 0;
             width: 100%;
             text-align: center;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 800;
             letter-spacing: 1px;
             margin-top: 30px;
-            padding: 6px 12px;
-            background: rgba(0, 17, 0, 0.5);
+            padding: 8px 15px;
+            background: rgba(10, 15, 28, 0.5);
             border-radius: 15px;
             border: 1px solid var(--main-color);
             animation: statusPulse 3s infinite;
-            max-width: 200px;
+            max-width: 220px;
             margin-left: auto;
             margin-right: auto;
+            font-family: 'Rajdhani', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .status-bar {
+            background: rgba(255, 255, 255, 0.5);
+            color: #222222;
+        }
+
+        .status-bar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--main-color);
         }
 
         @keyframes statusPulse {
@@ -252,11 +461,50 @@
             100% { box-shadow: 0 0 5px var(--secondary-color); }
         }
 
+        /* Interactive Elements */
+        .interactive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .interactive-item {
+            background: var(--card-bg);
+            border: 1px solid var(--main-color);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .light-theme .interactive-item {
+            color: #222222;
+        }
+
+        .interactive-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--secondary-color);
+        }
+
+        .interactive-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--main-color);
+        }
+
+        .interactive-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
         /* Personal Section */
         .personal-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px; /* تم تقليل المسافة */
+            gap: 25px;
             align-items: center;
             width: 100%;
         }
@@ -264,14 +512,39 @@
         .info-card {
             background: var(--card-bg);
             border: 1px solid var(--main-color);
-            border-radius: 12px; /* تم تصغير الزوايا */
-            padding: 20px; /* تم تقليل padding */
+            border-radius: 12px;
+            padding: 25px;
             box-shadow: 0 0 15px var(--secondary-color);
             transition: all 0.3s ease;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .info-card {
+            color: #222222;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .light-theme .info-card::before {
+            background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+        }
+
+        .info-card:hover::before {
+            left: 100%;
         }
 
         .info-card:hover {
@@ -280,19 +553,20 @@
         }
 
         .info-title {
-            font-size: 18px; /* تم تصغير الحجم */
+            font-size: 20px;
             font-weight: 800;
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             border-bottom: 1px solid var(--main-color);
-            padding-bottom: 8px;
+            padding-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px; /* تم تقليل المسافة */
+            gap: 12px;
             margin-bottom: 15px;
         }
 
@@ -303,21 +577,24 @@
         }
 
         .info-label {
-            font-size: 9px;
+            font-size: 10px;
             opacity: 0.7;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             text-transform: uppercase;
+            font-family: 'Rajdhani', sans-serif;
         }
 
         .info-value {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 800;
+            font-family: 'Rajdhani', sans-serif;
         }
 
         .bio-text {
-            font-size: 12px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.6;
             margin-bottom: 15px;
+            font-family: 'Rajdhani', sans-serif;
         }
 
         /* Stats Section */
@@ -332,70 +609,99 @@
             background: var(--card-bg);
             border: 1px solid var(--main-color);
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 0 15px var(--secondary-color);
             height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .stats-card {
+            color: #222222;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 168, 255, 0.05) 100%);
+            z-index: 0;
+        }
+
+        .light-theme .stats-card::before {
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 102, 204, 0.05) 100%);
         }
 
         .stats-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             border-bottom: 1px solid var(--main-color);
-            padding-bottom: 8px;
+            padding-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            z-index: 1;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
+            position: relative;
+            z-index: 1;
         }
 
         .stat-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
+            padding: 15px;
             border: 1px solid var(--main-color);
             border-radius: 8px;
             transition: all 0.3s ease;
+            background: rgba(5, 10, 20, 0.5);
+        }
+
+        .light-theme .stat-item {
+            background: rgba(255, 255, 255, 0.5);
+            color: #222222;
         }
 
         .stat-item:hover {
             background: var(--secondary-color);
             transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.2);
+        }
+
+        .light-theme .stat-item:hover {
+            background: rgba(0, 102, 204, 0.1);
         }
 
         .stat-value {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 900;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .stat-label {
-            font-size: 9px;
+            font-size: 10px;
             opacity: 0.7;
             text-transform: uppercase;
+            font-family: 'Rajdhani', sans-serif;
         }
 
-        .chart-container {
-            height: 150px; /* تم تصغير الارتفاع */
-            margin-top: 15px;
-            position: relative;
+        /* Animated Counter */
+        .counter {
+            display: inline-block;
         }
 
-        .chart-bar {
-            position: absolute;
-            bottom: 0;
-            width: 20px; /* تم تصغير العرض */
-            background: var(--main-color);
-            border-radius: 4px 4px 0 0;
-            transition: height 0.5s ease;
-        }
-
-        /* Music Section - تم تصغيره بشكل كبير */
+        /* Music Section */
         .music-content {
             display: flex;
             flex-direction: column;
@@ -404,33 +710,64 @@
         }
 
         .music-title {
-            font-size: 24px; /* تم تصغير الحجم */
+            font-size: 26px;
             font-weight: 900;
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 0 0 10px var(--secondary-color);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .light-theme .music-title {
+            text-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
         }
 
         .player-container {
             width: 100%;
-            max-width: 450px; /* تم تصغير الحجم الأقصى */
+            max-width: 450px;
             background: var(--card-bg);
             border: 1px solid var(--main-color);
             border-radius: 12px;
-            padding: 20px; /* تم تقليل padding */
+            padding: 25px;
             box-shadow: 0 0 15px var(--secondary-color);
             margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .player-container {
+            color: #222222;
+        }
+
+        .player-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 168, 255, 0.05) 100%);
+            z-index: 0;
+        }
+
+        .light-theme .player-container::before {
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 102, 204, 0.05) 100%);
         }
 
         .visual-display {
-            height: 70px; /* تم تصغير الارتفاع */
+            height: 70px;
             background: #000;
             border: 1px solid var(--main-color);
             border-radius: 8px;
             margin-bottom: 15px;
             position: relative;
             overflow: hidden;
+            z-index: 1;
+        }
+
+        .light-theme .visual-display {
+            background: #f0f0f0;
         }
 
         .visualizer {
@@ -444,7 +781,7 @@
         }
 
         .visualizer-bar {
-            width: 5px; /* تم تصغير العرض */
+            width: 5px;
             background: var(--main-color);
             margin: 0 1.5px;
             border-radius: 3px 3px 0 0;
@@ -459,26 +796,35 @@
         .metadata {
             text-align: center;
             margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
         }
 
         .track-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 800;
             margin-bottom: 4px;
+            font-family: 'Rajdhani', sans-serif;
         }
 
         .time-display {
-            font-size: 11px;
+            font-size: 12px;
             opacity: 0.7;
+            font-family: 'Rajdhani', sans-serif;
         }
 
         .progress-container {
             height: 4px;
-            background: #001100;
+            background: #050a14;
             border-radius: 2px;
             margin-bottom: 15px;
             cursor: pointer;
             position: relative;
+            z-index: 1;
+        }
+
+        .light-theme .progress-container {
+            background: #e0e0e0;
         }
 
         .progress-bar {
@@ -494,27 +840,36 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
         }
 
         .control-btn {
-            background: #001100;
+            background: #050a14;
             border: 1px solid var(--main-color);
             color: var(--main-color);
-            width: 38px; /* تم تصغير الحجم */
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 14px;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .control-btn {
+            background: #f0f0f0;
         }
 
         .control-btn:hover {
             background: var(--main-color);
             color: #000;
             transform: scale(1.1);
+            box-shadow: 0 0 10px var(--main-color);
         }
 
         /* Volume Control */
@@ -523,19 +878,30 @@
             align-items: center;
             gap: 6px;
             margin-top: 8px;
-            background: rgba(0, 17, 0, 0.5);
+            background: rgba(10, 15, 28, 0.5);
             padding: 6px 10px;
             border-radius: 15px;
             border: 1px solid var(--main-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .light-theme .volume-control {
+            background: rgba(255, 255, 255, 0.5);
+            color: #222222;
         }
 
         .volume-slider {
             flex: 1;
             height: 3px;
-            background: #001100;
+            background: #050a14;
             border-radius: 2px;
             -webkit-appearance: none;
             outline: none;
+        }
+
+        .light-theme .volume-slider {
+            background: #e0e0e0;
         }
 
         .volume-slider::-webkit-slider-thumb {
@@ -559,44 +925,76 @@
         }
 
         .volume-display {
-            font-size: 9px;
+            font-size: 10px;
             min-width: 30px;
             text-align: center;
+            font-family: 'Rajdhani', sans-serif;
         }
 
         .playlist-container {
             width: 100%;
-            max-width: 450px; /* تم تصغير الحجم الأقصى */
+            max-width: 450px;
             background: var(--card-bg);
             border: 1px solid var(--main-color);
             border-radius: 12px;
             padding: 15px;
             box-shadow: 0 0 15px var(--secondary-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .playlist-container {
+            color: #222222;
+        }
+
+        .playlist-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 168, 255, 0.05) 100%);
+            z-index: 0;
+        }
+
+        .light-theme .playlist-container::before {
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 102, 204, 0.05) 100%);
         }
 
         .playlist-header {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 800;
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
             border-bottom: 1px solid var(--main-color);
             padding-bottom: 6px;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            z-index: 1;
         }
 
         .playlist-items {
-            max-height: 150px; /* تم تصغير الارتفاع */
+            max-height: 150px;
             overflow-y: auto;
+            position: relative;
+            z-index: 1;
         }
 
         .playlist-item {
-            padding: 6px 10px;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 7px 10px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            font-size: 11px;
+            font-size: 12px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .light-theme .playlist-item {
+            border-bottom: 1px solid rgba(0, 102, 204, 0.1);
         }
 
         .playlist-item:last-child {
@@ -605,6 +1003,10 @@
 
         .playlist-item:hover {
             background: var(--secondary-color);
+        }
+
+        .light-theme .playlist-item:hover {
+            background: rgba(0, 102, 204, 0.1);
         }
 
         .playlist-item.active {
@@ -629,9 +1031,254 @@
             left: 0;
             width: 100%;
             text-align: center;
-            font-size: 10px;
+            font-size: 11px;
             opacity: 0.7;
             letter-spacing: 1px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .light-theme .footer {
+            color: #222222;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(10, 15, 28, 0.7);
+            border: 1px solid var(--main-color);
+            color: var(--main-color);
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .social-link {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .social-link:hover {
+            background: var(--main-color);
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--main-color);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .theme-btn {
+            background: rgba(10, 15, 28, 0.8);
+            border: 1px solid var(--main-color);
+            color: var(--main-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .light-theme .theme-btn {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .theme-btn:hover {
+            background: var(--main-color);
+            color: #000;
+            transform: rotate(180deg);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top-btn {
+            background: rgba(10, 15, 28, 0.8);
+            border: 1px solid var(--main-color);
+            color: var(--main-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .light-theme .back-to-top-btn {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .back-to-top-btn:hover {
+            background: var(--main-color);
+            color: #000;
+            transform: translateY(-5px);
+        }
+
+        /* Text Effect */
+        .text-effect {
+            position: relative;
+            display: inline-block;
+        }
+
+        .text-effect::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--main-color);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .text-effect:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Holographic Effect */
+        .holographic {
+            background: linear-gradient(125deg, 
+                rgba(0, 168, 255, 0.1) 0%, 
+                rgba(0, 168, 255, 0.3) 25%, 
+                rgba(76, 223, 255, 0.1) 50%, 
+                rgba(0, 168, 255, 0.3) 75%, 
+                rgba(0, 168, 255, 0.1) 100%);
+            background-size: 400% 400%;
+            animation: holographic 8s ease infinite;
+        }
+
+        .light-theme .holographic {
+            background: linear-gradient(125deg, 
+                rgba(0, 102, 204, 0.1) 0%, 
+                rgba(0, 102, 204, 0.3) 25%, 
+                rgba(0, 136, 255, 0.1) 50%, 
+                rgba(0, 102, 204, 0.3) 75%, 
+                rgba(0, 102, 204, 0.1) 100%);
+        }
+
+        @keyframes holographic {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+
+        /* Interactive Features */
+        .interactive-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .feature-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--main-color);
+            color: var(--main-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .light-theme .feature-btn {
+            color: #222222;
+        }
+
+        .feature-btn:hover {
+            background: var(--main-color);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--secondary-color);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--main-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Particle Text */
+        .particle-text span {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .particle-text:hover span {
+            transform: translateY(-10px);
+        }
+
+        /* Typewriter Effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--main-color);
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        /* Audio Visualizer */
+        .audio-visualizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 60px;
+            gap: 2px;
+            margin: 15px 0;
+        }
+
+        .audio-bar {
+            width: 4px;
+            background: var(--main-color);
+            border-radius: 2px;
+            transition: height 0.1s ease;
         }
 
         /* Responsive */
@@ -649,10 +1296,10 @@
             }
             
             .hero-title {
-                font-size: 28px;
+                font-size: 30px;
             }
             
-            .hero-icon {
+            .music-icon {
                 font-size: 60px;
             }
             
@@ -672,25 +1319,59 @@
                 width: 90%;
                 max-width: 250px;
             }
+            
+            .notification-container {
+                right: 10px;
+                max-width: calc(100% - 20px);
+            }
+            
+            .interactive-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Green Animated Background -->
-    <div class="animated-bg"></div>
-
-    <!-- Date & Time Display - تم تعديل موقعه -->
-    <div class="datetime-display">
-        <div class="time" id="current-time">00:00:00</div>
-        <div class="date" id="current-date">January 1, 2023</div>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="page-progress"></div>
     </div>
 
-    <!-- Navigation - تم تعديل موقعه -->
+    <!-- Notification System -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button class="theme-btn" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="back-to-top">
+        <button class="back-to-top-btn">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <!-- Animated Background with Particles -->
+    <div class="animated-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
     <div class="nav-container">
-        <button class="nav-btn active" data-section="home">Home</button>
-        <button class="nav-btn" data-section="personal">Personal</button>
-        <button class="nav-btn" data-section="stats">Stats</button>
-        <button class="nav-btn" data-section="music">Music</button>
+        <button class="nav-btn active" data-section="home">
+            <i class="fas fa-home"></i>
+        </button>
+        <button class="nav-btn" data-section="personal">
+            <i class="fas fa-user"></i>
+        </button>
+        <button class="nav-btn" data-section="stats">
+            <i class="fas fa-chart-bar"></i>
+        </button>
+        <button class="nav-btn" data-section="music">
+            <i class="fas fa-music"></i>
+        </button>
     </div>
 
     <!-- Main Content -->
@@ -699,24 +1380,70 @@
         <section class="section active" id="home">
             <div class="home-content">
                 <div class="hero">
-                    <!-- تم استبدال الشعار بشعار موسيقي جديد ومميز -->
-                    <div class="hero-icon">♪</div>
-                    <h1 class="hero-title">Bola Emad</h1>
-                    <p class="hero-subtitle">Content Creator & Digital Enthusiast</p>
+                    <div class="music-icon-container">
+                        <div class="music-icon">♪</div>
+                    </div>
+                    <h1 class="hero-title"><span class="typing-text">POLA EMAD</span></h1>
+                    <p class="hero-subtitle">BMW Enthusiast & Night Driver</p>
+                    
+                    <!-- Date & Time Display -->
+                    <div class="datetime-display">
+                        <div class="time" id="current-time">00:00:00</div>
+                        <div class="date" id="current-date">January 1, 2023</div>
+                    </div>
                 </div>
                 <div class="info-card" style="max-width: 500px;">
-                    <p style="font-size: 13px; line-height: 1.5; text-align: center;">
-                        Welcome to my digital realm! I'm Bola Emad, a passionate content creator, 
-                        gaming enthusiast, and Uber driver based in Texas. I thrive at the intersection 
-                        of technology and creativity, always exploring new ways to connect with people 
-                        both on the road and online.
+                    <p style="font-size: 14px; line-height: 1.6; text-align: center;">
+                        Welcome to my digital realm! I'm POLA EMAD, a passionate BMW enthusiast,
+                        Uber driver, and gaming aficionado based in Texas. I thrive at the intersection 
+                        of high-performance vehicles and digital entertainment, always exploring new ways 
+                        to connect with people both on the road and online.
                     </p>
                     <p style="font-style: italic; margin-top: 15px; text-align: center;">
-                        "Life is a game. The secret is knowing when to press pause and enjoy the soundtrack."
+                        "Life is a journey. The secret is knowing when to press pause and enjoy the soundtrack."
                     </p>
+                    
+                    <!-- Interactive Elements Grid -->
+                    <div class="interactive-grid">
+                        <div class="interactive-item" data-action="glitch">
+                            <div class="interactive-icon"><i class="fas fa-bolt"></i></div>
+                            <div class="interactive-label">Glitch Effect</div>
+                        </div>
+                        <div class="interactive-item" data-action="confetti">
+                            <div class="interactive-icon"><i class="fas fa-party-horn"></i></div>
+                            <div class="interactive-label">Confetti</div>
+                        </div>
+                        <div class="interactive-item" data-action="color-change">
+                            <div class="interactive-icon"><i class="fas fa-palette"></i></div>
+                            <div class="interactive-label">Color Change</div>
+                        </div>
+                        <div class="interactive-item" data-action="sound-effect">
+                            <div class="interactive-icon"><i class="fas fa-volume-up"></i></div>
+                            <div class="interactive-label">Sound Effect</div>
+                        </div>
+                    </div>
+
+                    <!-- New Interactive Features -->
+                    <div class="interactive-features">
+                        <button class="feature-btn" data-action="particle-text">Particle Text</button>
+                        <button class="feature-btn" data-action="gradient-text">Gradient Text</button>
+                        <button class="feature-btn" data-action="typewriter">Typewriter</button>
+                        <button class="feature-btn" data-action="audio-visualizer">Audio Visualizer</button>
+                        <button class="feature-btn" data-action="reset">Reset All</button>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="social-links">
+                        <a href="https://youtube.com/@SoundSurge3" class="social-link" title="YouTube" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://github.com/bolae700" class="social-link" title="GitHub" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
                 </div>
-                <!-- Status Bar مع تصميم محسن -->
-                <div class="status-bar">STATUS: GOD IS LOVE</div>
+                <!-- Status Bar -->
+                <div class="status-bar" id="status-bar">STATUS: GOD IS LOVE</div>
             </div>
         </section>
 
@@ -724,11 +1451,11 @@
         <section class="section" id="personal">
             <div class="personal-content">
                 <div class="info-card">
-                    <h2 class="info-title">Personal Profile</h2>
+                    <h2 class="info-title text-effect">Personal Profile</h2>
                     <div class="info-grid">
                         <div class="info-item">
                             <span class="info-label">Name</span>
-                            <span class="info-value">Bola Emad</span>
+                            <span class="info-value">POLA EMAD</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Age</span>
@@ -744,25 +1471,24 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">Hobby</span>
-                            <span class="info-value">Gaming & Content Creation</span>
+                            <span class="info-value">Gaming & BMW</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Platform</span>
-                            <span class="info-value">YouTube</span>
+                            <span class="info-label">Passion</span>
+                            <span class="info-value">Night Driving</span>
                         </div>
                     </div>
                 </div>
                 <div class="info-card">
-                    <h2 class="info-title">About Me</h2>
+                    <h2 class="info-title text-effect">About Me</h2>
                     <p class="bio-text">
                         By day, I navigate the vibrant streets of Texas, meeting fascinating people and 
-                        discovering hidden gems across the state. By night, I transform into a content 
-                        creator and gaming enthusiast, immersing myself in digital worlds and sharing my 
-                        experiences with a growing online community.
+                        discovering hidden gems across the state. By night, I transform into a BMW enthusiast 
+                        and gaming aficionado, immersing myself in digital worlds and the thrill of the open road.
                     </p>
                     <p class="bio-text">
-                        My journey began with a simple love for gaming and storytelling, which evolved into 
-                        creating content that resonates with people from all walks of life. Whether I'm behind 
+                        My journey began with a simple love for cars and gaming, which evolved into 
+                        a lifestyle that resonates with people from all walks of life. Whether I'm behind 
                         the wheel or the controller, I believe every interaction is an opportunity to connect, 
                         inspire, and entertain.
                     </p>
@@ -777,31 +1503,46 @@
         <!-- Stats Section -->
         <section class="section" id="stats">
             <div class="stats-content">
-                <div class="stats-card">
-                    <h2 class="stats-title">Achievements</h2>
+                <div class="stats-card holographic">
+                    <h2 class="stats-title text-effect">Achievements</h2>
                     <div class="stats-grid">
                         <div class="stat-item">
-                            <div class="stat-value">1.1K</div>
+                            <div class="stat-value counter" data-target="1100">0</div>
                             <div class="stat-label">YouTube Subscribers</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">500</div>
-                            <div class="stat-label">Content Videos</div>
+                            <div class="stat-value counter" data-target="500">0</div>
+                            <div class="stat-label">BMW Models Driven</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">600</div>
-                            <div class="stat-label">Uber Rides</div>
+                            <div class="stat-value counter" data-target="600">0</div>
+                            <div class="stat-label">Night Drives</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">7</div>
+                            <div class="stat-value counter" data-target="7">0</div>
                             <div class="stat-label">Games Completed</div>
                         </div>
                     </div>
                 </div>
-                <div class="stats-card">
-                    <h2 class="stats-title">Monthly Analytics</h2>
-                    <div class="chart-container" id="content-chart">
-                        <!-- Chart bars will be generated by JavaScript -->
+                <div class="stats-card holographic">
+                    <h2 class="stats-title text-effect">Performance</h2>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value counter" data-target="99">0</div>
+                            <div class="stat-label">Uber Rating</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5★</div>
+                            <div class="stat-label">Driver Rating</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value counter" data-target="2000">0</div>
+                            <div class="stat-label">Miles Driven</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">24/7</div>
+                            <div class="stat-label">Availability</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -810,7 +1551,7 @@
         <!-- Music Section -->
         <section class="section" id="music">
             <div class="music-content">
-                <h2 class="music-title">Neon Music Player</h2>
+                <h2 class="music-title text-effect">Night Drive Music Player</h2>
                 <div class="player-container">
                     <div class="visual-display">
                         <div class="visualizer" id="visualizer">
@@ -818,16 +1559,16 @@
                         </div>
                     </div>
                     <div class="metadata">
-                        <div class="track-title" id="track-title">NEON MUSIC PLAYER</div>
+                        <div class="track-title" id="track-title">NIGHT DRIVE MIX</div>
                         <div class="time-display" id="time-display">00:00 / 00:00</div>
                     </div>
                     <div class="progress-container" id="progress-container">
                         <div class="progress-bar" id="progress-bar"></div>
                     </div>
                     <div class="controls">
-                        <button class="control-btn" data-action="prev">⏮</button>
-                        <button class="control-btn" data-action="play" id="play-btn">▶</button>
-                        <button class="control-btn" data-action="next">⏭</button>
+                        <button class="control-btn" data-action="prev"><i class="fas fa-step-backward"></i></button>
+                        <button class="control-btn" data-action="play" id="play-btn"><i class="fas fa-play"></i></button>
+                        <button class="control-btn" data-action="next"><i class="fas fa-step-forward"></i></button>
                     </div>
                     <!-- Volume Control -->
                     <div class="volume-control">
@@ -837,7 +1578,7 @@
                     </div>
                 </div>
                 <div class="playlist-container">
-                    <div class="playlist-header">Playlist - 22 Tracks</div>
+                    <div class="playlist-header">Playlist - 8 Tracks</div>
                     <div class="playlist-items" id="playlist-items">
                         <!-- Playlist items will be generated by JavaScript -->
                     </div>
@@ -850,6 +1591,40 @@
     <div class="footer">DESIGNED WITH ♥ IN TEXAS</div>
 
     <script>
+        // Store original content for reset functionality
+        const originalContent = {
+            heroTitle: document.querySelector('.hero-title').innerHTML,
+            heroSubtitle: document.querySelector('.hero-subtitle').textContent,
+            infoCard: document.querySelector('.info-card').innerHTML
+        };
+
+        // Create particles for background (reduced count for performance)
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30; // Reduced from 60 for better performance
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size
+                const size = Math.random() * 2 + 1; // Reduced max size
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                
+                // Random animation delay and duration
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 10;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         // Date & Time Functionality
         function updateDateTime() {
             const now = new Date();
@@ -877,7 +1652,320 @@
         updateDateTime();
         setInterval(updateDateTime, 1000);
 
-        // Sound Effects
+        // Progress Bar
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("page-progress").style.width = scrolled + "%";
+        }
+        
+        window.addEventListener('scroll', updateProgressBar);
+
+        // Back to Top Button
+        function initBackToTop() {
+            const backToTop = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            });
+            
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Theme Toggle
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const icon = themeToggle.querySelector('i');
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                
+                if (document.body.classList.contains('light-theme')) {
+                    icon.className = 'fas fa-sun';
+                } else {
+                    icon.className = 'fas fa-moon';
+                }
+            });
+        }
+
+        // Reset to original state
+        function resetToOriginal() {
+            const heroTitle = document.querySelector('.hero-title');
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            const infoCard = document.querySelector('.info-card');
+            
+            heroTitle.innerHTML = originalContent.heroTitle;
+            heroSubtitle.textContent = originalContent.heroSubtitle;
+            infoCard.innerHTML = originalContent.infoCard;
+            
+            // Remove any added visualizers
+            const existingVisualizer = document.querySelector('.audio-visualizer');
+            if (existingVisualizer) {
+                existingVisualizer.remove();
+            }
+            
+            // Reinitialize interactive elements
+            initInteractiveElements();
+            
+            notificationManager.showNotification(
+                'Reset Complete', 
+                'All elements have been reset to their original state', 
+                'success', 
+                3000
+            );
+        }
+
+        // Interactive Elements
+        function initInteractiveElements() {
+            const interactiveItems = document.querySelectorAll('.interactive-item');
+            
+            interactiveItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const action = item.getAttribute('data-action');
+                    
+                    switch(action) {
+                        case 'glitch':
+                            // Add glitch effect to title
+                            const title = document.querySelector('.hero-title');
+                            title.classList.add('glitch');
+                            title.setAttribute('data-text', title.textContent);
+                            
+                            setTimeout(() => {
+                                title.classList.remove('glitch');
+                            }, 2000);
+                            break;
+                            
+                        case 'confetti':
+                            // Create confetti effect
+                            createConfetti();
+                            break;
+                            
+                        case 'color-change':
+                            // Change color scheme
+                            const colors = ['#00a8ff', '#ff6b6b', '#4cdfff', '#ffaa00', '#00ff88'];
+                            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                            document.documentElement.style.setProperty('--main-color', randomColor);
+                            break;
+                            
+                        case 'sound-effect':
+                            // Play sound effect
+                            soundManager.playNotification();
+                            break;
+                    }
+                });
+            });
+
+            // New Interactive Features
+            const featureButtons = document.querySelectorAll('.feature-btn');
+            
+            featureButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const action = button.getAttribute('data-action');
+                    
+                    switch(action) {
+                        case 'particle-text':
+                            // Particle text effect
+                            const heroTitle = document.querySelector('.hero-title');
+                            const text = heroTitle.textContent;
+                            heroTitle.innerHTML = '';
+                            
+                            for (let i = 0; i < text.length; i++) {
+                                const span = document.createElement('span');
+                                span.textContent = text[i];
+                                span.style.transitionDelay = `${i * 0.05}s`;
+                                heroTitle.appendChild(span);
+                            }
+                            
+                            heroTitle.classList.add('particle-text');
+                            break;
+                            
+                        case 'gradient-text':
+                            // Gradient text effect
+                            document.querySelector('.hero-title').classList.toggle('gradient-text');
+                            break;
+                            
+                        case 'typewriter':
+                            // Typewriter effect
+                            const subtitle = document.querySelector('.hero-subtitle');
+                            const originalText = subtitle.textContent;
+                            subtitle.textContent = '';
+                            subtitle.classList.add('typewriter');
+                            
+                            let i = 0;
+                            const typeInterval = setInterval(() => {
+                                if (i < originalText.length) {
+                                    subtitle.textContent += originalText.charAt(i);
+                                    i++;
+                                } else {
+                                    clearInterval(typeInterval);
+                                    setTimeout(() => {
+                                        subtitle.classList.remove('typewriter');
+                                    }, 1000);
+                                }
+                            }, 50);
+                            break;
+                            
+                        case 'audio-visualizer':
+                            // Audio visualizer
+                            const existingVisualizer = document.querySelector('.audio-visualizer');
+                            if (existingVisualizer) {
+                                existingVisualizer.remove();
+                                return;
+                            }
+                            
+                            const visualizerContainer = document.createElement('div');
+                            visualizerContainer.className = 'audio-visualizer';
+                            
+                            for (let i = 0; i < 20; i++) {
+                                const bar = document.createElement('div');
+                                bar.className = 'audio-bar';
+                                bar.style.height = `${Math.random() * 40 + 10}px`;
+                                bar.style.animationDelay = `${i * 0.05}s`;
+                                visualizerContainer.appendChild(bar);
+                            }
+                            
+                            document.querySelector('.home-content').appendChild(visualizerContainer);
+                            
+                            // Animate bars
+                            const visualizerInterval = setInterval(() => {
+                                const bars = document.querySelectorAll('.audio-bar');
+                                if (bars.length === 0) {
+                                    clearInterval(visualizerInterval);
+                                    return;
+                                }
+                                bars.forEach(bar => {
+                                    bar.style.height = `${Math.random() * 40 + 10}px`;
+                                });
+                            }, 200);
+                            break;
+                            
+                        case 'reset':
+                            resetToOriginal();
+                            break;
+                    }
+                });
+            });
+        }
+
+        // Confetti Effect (optimized for performance)
+        function createConfetti() {
+            const confettiCount = 50; // Reduced from 100 for better performance
+            const colors = ['#00a8ff', '#4cdfff', '#ff6b6b', '#ffaa00', '#00ff88'];
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.width = '8px'; // Slightly smaller
+                confetti.style.height = '8px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.position = 'fixed';
+                confetti.style.top = '0';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.borderRadius = '50%';
+                confetti.style.zIndex = '9999';
+                confetti.style.pointerEvents = 'none';
+                
+                document.body.appendChild(confetti);
+                
+                // Animate confetti
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 2000 + 1500, // Shorter duration
+                    easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+                });
+                
+                animation.onfinish = () => {
+                    confetti.remove();
+                };
+            }
+        }
+
+        // Notification System
+        class NotificationManager {
+            constructor() {
+                this.container = document.getElementById('notification-container');
+                this.notifications = [];
+                this.nextId = 0;
+            }
+            
+            showNotification(title, message, type = 'info', duration = 5000) {
+                const id = this.nextId++;
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.id = `notification-${id}`;
+                
+                let icon = 'ℹ️';
+                if (type === 'success') icon = '✅';
+                else if (type === 'warning') icon = '⚠️';
+                else if (type === 'error') icon = '❌';
+                
+                notification.innerHTML = `
+                    <div class="notification-icon">${icon}</div>
+                    <div class="notification-content">
+                        <div class="notification-title">${title}</div>
+                        <div class="notification-message">${message}</div>
+                    </div>
+                    <button class="notification-close" data-id="${id}">✕</button>
+                `;
+                
+                this.container.appendChild(notification);
+                
+                // Show notification with animation
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+                
+                // Auto remove after duration
+                const removeTimeout = setTimeout(() => {
+                    this.removeNotification(id);
+                }, duration);
+                
+                // Store notification data
+                this.notifications.push({
+                    id,
+                    element: notification,
+                    removeTimeout
+                });
+                
+                // Add click event to close button
+                notification.querySelector('.notification-close').addEventListener('click', () => {
+                    this.removeNotification(id);
+                });
+                
+                return id;
+            }
+            
+            removeNotification(id) {
+                const index = this.notifications.findIndex(n => n.id === id);
+                if (index === -1) return;
+                
+                const notification = this.notifications[index];
+                notification.element.classList.remove('show');
+                
+                setTimeout(() => {
+                    if (notification.element.parentNode) {
+                        notification.element.parentNode.removeChild(notification.element);
+                    }
+                    clearTimeout(notification.removeTimeout);
+                    this.notifications.splice(index, 1);
+                }, 300);
+            }
+        }
+        
+        const notificationManager = new NotificationManager();
+
+        // Sound Effects (optimized)
         class SoundManager {
             constructor() {
                 this.audioContext = null;
@@ -885,11 +1973,16 @@
             }
             
             init() {
-                try {
-                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                } catch (e) {
-                    console.error('Web Audio API is not supported in this browser');
-                }
+                // Only initialize AudioContext on user interaction for better performance
+                document.addEventListener('click', () => {
+                    if (!this.audioContext) {
+                        try {
+                            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        } catch (e) {
+                            console.error('Web Audio API is not supported in this browser');
+                        }
+                    }
+                }, { once: true });
             }
             
             playBeep(frequency = 440, duration = 0.1) {
@@ -912,16 +2005,22 @@
             }
             
             playClick() {
-                this.playBeep(523.25, 0.05); // C5
+                this.playBeep(523.25, 0.05);
             }
             
             playHover() {
-                this.playBeep(659.25, 0.1); // E5
+                this.playBeep(659.25, 0.1);
             }
             
             playSuccess() {
-                this.playBeep(783.99, 0.1); // G5
-                setTimeout(() => this.playBeep(1046.50, 0.1), 100); // C6
+                this.playBeep(523.25, 0.1);
+                setTimeout(() => this.playBeep(659.25, 0.1), 100);
+                setTimeout(() => this.playBeep(783.99, 0.1), 200);
+            }
+            
+            playNotification() {
+                this.playBeep(783.99, 0.1);
+                setTimeout(() => this.playBeep(659.25, 0.1), 100);
             }
         }
         
@@ -940,6 +2039,15 @@
                 // Add active class to clicked button and corresponding section
                 this.classList.add('active');
                 document.getElementById(this.dataset.section).classList.add('active');
+                
+                // Show notification
+                const sectionName = this.dataset.section.charAt(0).toUpperCase() + this.dataset.section.slice(1);
+                notificationManager.showNotification(
+                    'Navigation', 
+                    `Switched to ${sectionName} section`, 
+                    'info', 
+                    2000
+                );
             });
             
             // Add hover sound
@@ -948,36 +2056,50 @@
             });
         });
 
-        // Stats Charts
-        function createCharts() {
-            // Content creation chart
-            const contentChart = document.getElementById('content-chart');
-            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN'];
-            const contentData = [12, 18, 15, 22, 19, 25];
+        // Status Bar Interaction
+        document.getElementById('status-bar').addEventListener('click', () => {
+            const messages = [
+                "STATUS: GOD IS LOVE",
+                "STATUS: DRIVING THROUGH TEXAS",
+                "STATUS: NIGHT RIDER MODE",
+                "STATUS: GAMING SESSION ACTIVE",
+                "STATUS: MUSIC ON, WORLD OFF"
+            ];
             
-            contentChart.innerHTML = '';
-            const maxContent = Math.max(...contentData);
+            const currentMessage = document.getElementById('status-bar').textContent;
+            let newMessage;
             
-            contentData.forEach((value, index) => {
-                const bar = document.createElement('div');
-                bar.className = 'chart-bar';
-                bar.style.height = `${(value / maxContent) * 100}%`;
-                bar.style.left = `${(index / months.length) * 100}%`;
-                bar.style.width = `${(1 / months.length) * 100 - 2}%`;
-                bar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
+            do {
+                newMessage = messages[Math.floor(Math.random() * messages.length)];
+            } while (newMessage === currentMessage && messages.length > 1);
+            
+            document.getElementById('status-bar').textContent = newMessage;
+            soundManager.playSuccess();
+            
+            notificationManager.showNotification(
+                'Status Updated', 
+                newMessage.replace('STATUS: ', ''), 
+                'success', 
+                3000
+            );
+        });
+
+        // Animated Counter
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const increment = target / speed;
                 
-                const label = document.createElement('div');
-                label.style.position = 'absolute';
-                label.style.bottom = '-20px';
-                label.style.left = `${(index / months.length) * 100 + (1 / months.length) * 50}%`;
-                label.style.transform = 'translateX(-50%)';
-                label.style.color = getComputedStyle(document.documentElement).getPropertyValue('--main-color');
-                label.style.fontSize = '9px';
-                label.style.fontWeight = '800';
-                label.textContent = months[index];
-                
-                contentChart.appendChild(bar);
-                contentChart.appendChild(label);
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(() => animateCounters(), 1);
+                } else {
+                    counter.innerText = target;
+                }
             });
         }
 
@@ -998,7 +2120,7 @@
             { url: "https://audio.jukehost.co.uk/kgSpZOc3fsRPOJi3DUbLvD8cwPIs8MpL", title: "Mi Gente" },
             { url: "https://audio.jukehost.co.uk/tx8bSrzYENmyQvIuTrjRB9MHa12SbkSS", title: "Adelante" },
             { url: "https://audio.jukehost.co.uk/GOzONzgMkJgOFZgbzmCAPU3uXpKKcYAh", title: "Unstoppable" },
-            { url: "https://audio.jukehost.co.uk/YMCtK6Yk34OrMvWkA4d5SZegHeEffNje", title: "Sweet Dreams" },
+            { url: "https://audio.jukehost.co.uk/YMCtK6Yk34OrMvWkA4d5SZegHeEffNje", title: "Sweet Dreams" }
         ];
         
         function initializePlaylist() {
@@ -1030,13 +2152,13 @@
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
-                document.getElementById('play-btn').textContent = '▶';
+                document.getElementById('play-btn').innerHTML = '<i class="fas fa-play"></i>';
             } else {
                 const playPromise = audio.play();
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
                         isPlaying = true;
-                        document.getElementById('play-btn').textContent = '⏸';
+                        document.getElementById('play-btn').innerHTML = '<i class="fas fa-pause"></i>';
                     }).catch(err => {
                         console.error('Play Error:', err);
                         isPlaying = false;
@@ -1049,7 +2171,7 @@
             if (index < 0 || index >= tracks.length) return;
             audio.pause();
             isPlaying = false;
-            document.getElementById('play-btn').textContent = '▶';
+            document.getElementById('play-btn').innerHTML = '<i class="fas fa-play"></i>';
             currentTrackIndex = index;
             audio.src = tracks[index].url;
             document.getElementById('track-title').textContent = tracks[index].title;
@@ -1057,6 +2179,14 @@
             document.getElementById('time-display').textContent = '00:00 / 00:00';
             audio.load();
             updatePlaylist();
+            
+            // Show notification
+            notificationManager.showNotification(
+                'Now Playing', 
+                tracks[index].title, 
+                'info', 
+                3000
+            );
         }
         
         function updateProgress() {
@@ -1154,14 +2284,17 @@
 
         // Initialize everything when the page loads
         window.addEventListener('load', () => {
-            createCharts();
+            createParticles();
             createVisualizer();
             initializePlaylist();
             setupProgressControl();
             initializeMusicEvents();
             loadTrack(0);
+            initBackToTop();
+            initThemeToggle();
+            initInteractiveElements();
             
-            // Add sound effects to all interactive elements
+            // Add sound effects to interactive elements
             document.querySelectorAll('button').forEach(button => {
                 button.addEventListener('click', () => {
                     soundManager.playClick();
@@ -1171,6 +2304,28 @@
                     soundManager.playHover();
                 });
             });
+            
+            // Show welcome notification
+            setTimeout(() => {
+                notificationManager.showNotification(
+                    'Welcome to POLA EMAD Portfolio', 
+                    'Explore the different sections using the navigation menu below', 
+                    'success', 
+                    5000
+                );
+            }, 1000);
+            
+            // Animate counters when stats section is viewed
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            observer.observe(document.getElementById('stats'));
         });
     </script>
 </body>
