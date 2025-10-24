@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pavly | Manga Portfolio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Bangers&family=Comic+Neue:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Pavly | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Variables */
         :root {
-            --black: #000000;
-            --white: #ffffff;
-            --gray: #888888;
-            --dark-gray: #1a1a1a;
-            --light-gray: #f0f0f0;
-            --accent: #ff3e3e;
+            --primary: #000000;
+            --secondary: #ffffff;
+            --accent: #888888;
+            --gray: #222222;
+            --light-gray: #444444;
+            --dark-gray: #111111;
+            --scrollbar: #333333;
+            --scrollbar-thumb: #666666;
         }
-
-        /* Reset & Base Styles */
+        
         * {
             margin: 0;
             padding: 0;
@@ -27,42 +27,20 @@
         }
 
         html {
-            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar);
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--black);
-            color: var(--white);
+            background-color: var(--primary);
+            color: var(--secondary);
             overflow-x: hidden;
-            cursor: none;
             min-height: 100vh;
-            position: relative;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            padding: 20px;
-        }
-
-        /* Custom Cursor - Smaller and more professional */
-        .cursor {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            transform: rotate(45deg);
-            background-color: var(--white);
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s ease, width 0.1s ease, height 0.1s ease;
-        }
-
-        .cursor.hover {
-            transform: rotate(45deg) scale(1.5);
-            background-color: var(--white);
-            width: 10px;
-            height: 10px;
+            align-items: center;
+            padding: 15px;
         }
 
         /* Custom Scrollbar */
@@ -71,289 +49,287 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--dark-gray);
+            background: var(--scrollbar);
+            border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--white);
+            background: var(--scrollbar-thumb);
             border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--gray);
+            background: #888;
         }
 
-        /* Background Effects */
-        .comic-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.4;
+        /* Main Container */
+        .container {
+            display: flex;
+            width: 95%;
+            max-width: 1140px;
+            height: 85vh;
+            min-height: 570px;
+            background: var(--dark-gray);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--light-gray);
         }
 
-        .comic-dot {
-            position: absolute;
-            background-color: var(--white);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
-        }
-
-        .comic-dot:nth-child(1) {
-            top: 10%;
-            left: 5%;
-            width: 6px;
-            height: 6px;
-            animation-delay: 0s;
-        }
-
-        .comic-dot:nth-child(2) {
-            top: 60%;
-            left: 80%;
-            width: 8px;
-            height: 8px;
-            animation-delay: -3s;
-            animation-direction: reverse;
-        }
-
-        .comic-dot:nth-child(3) {
-            top: 30%;
-            left: 70%;
-            width: 5px;
-            height: 5px;
-            animation-delay: -7s;
-        }
-
-        .comic-dot:nth-child(4) {
-            top: 70%;
-            left: 10%;
-            width: 7px;
-            height: 7px;
-            animation-delay: -10s;
-            animation-direction: reverse;
-        }
-
-        .comic-dot:nth-child(5) {
-            top: 20%;
-            left: 40%;
-            width: 4px;
-            height: 4px;
-            animation-delay: -5s;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0);
-            }
-            25% {
-                transform: translate(10px, 15px);
-            }
-            50% {
-                transform: translate(20px, 5px);
-            }
-            75% {
-                transform: translate(5px, 20px);
-            }
-            100% {
-                transform: translate(0, 0);
-            }
-        }
-
-        /* Main Container - Centered */
-        .main-container {
-            width: 90%;
-            max-width: 800px;
-            margin: 0 auto;
+        /* Compact Sidebar - Half Height */
+        .sidebar {
+            width: 95px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 18px 0;
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            border-right: 1px solid var(--light-gray);
+            height: 47.5vh;
+            align-self: center;
+            border-radius: 0 12px 12px 0;
         }
 
-        /* Header with Date and Navigation */
-        .header {
-            width: 100%;
+        /* Logo Section - Top Quarter */
+        .logo-section {
+            height: 25%;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
+            justify-content: center;
+            margin-bottom: 8px;
+            width: 100%;
+            background-image: url('https://xatimg.com/image/rWDHtSw2pqG2.jpg');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--light-gray);
         }
 
-        /* Date and Time - Modern Style */
-        .datetime {
-            font-family: 'Bangers', cursive;
-            font-size: 16px;
-            letter-spacing: 1px;
-            color: var(--white);
-            padding: 8px 15px;
-            background-color: var(--dark-gray);
-            border-radius: 20px;
-            border: 2px solid var(--white);
-            box-shadow: 3px 3px 0 var(--dark-gray);
+        .logo {
+            width: 57px;
+            height: 57px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0.9;
         }
 
-        /* Navigation */
-        .nav-tabs {
+        .logo:hover {
+            transform: scale(1.08);
+            opacity: 1;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Navigation Icons - Remaining Three Quarters */
+        .nav-icons {
             display: flex;
-            background-color: var(--dark-gray);
-            border-radius: 25px;
-            padding: 5px;
-            border: 2px solid var(--white);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 75%;
+            width: 100%;
         }
 
-        .tab-btn {
-            padding: 8px 20px;
-            background: none;
-            border: none;
-            color: var(--white);
-            font-family: 'Bangers', cursive;
-            font-size: 16px;
-            letter-spacing: 1px;
-            cursor: none;
-            border-radius: 20px;
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 33%;
+            cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
         }
 
-        .tab-btn:hover {
-            color: var(--black);
-            background-color: var(--white);
-            transform: translateY(-2px);
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .tab-btn.active {
-            color: var(--black);
-            background-color: var(--white);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Main Content - Fixed Size */
-        .content-container {
-            width: 100%;
-            max-width: 700px;
-            height: 500px;
-            background-color: var(--dark-gray);
-            border-radius: 20px;
-            border: 2px solid var(--white);
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 38px;
+            background: var(--secondary);
+            border-radius: 2px 0 0 2px;
         }
 
-        .tab-content {
+        .icon {
+            width: 22px;
+            height: 22px;
+            margin-bottom: 6px;
+            fill: var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover .icon {
+            transform: scale(1.08);
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 25px;
+            position: relative;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-section {
             display: none;
             animation: fadeIn 0.5s ease;
-            padding: 30px;
-            height: 100%;
-            overflow-y: auto;
+            flex: 1;
         }
 
-        .tab-content.active {
-            display: block;
+        .content-section.active {
+            display: flex;
+            flex-direction: column;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Home Tab - Centered Layout */
+        /* Date & Time Display */
+        .datetime-display {
+            position: absolute;
+            top: 18px;
+            right: 25px;
+            text-align: right;
+            font-family: 'Orbitron', monospace;
+            font-weight: 500;
+            z-index: 10;
+        }
+
+        .time {
+            font-size: 1.7rem;
+            margin-bottom: 4px;
+            color: var(--secondary);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+
+        .date {
+            font-size: 0.85rem;
+            color: #aaa;
+            letter-spacing: 0.8px;
+        }
+
+        /* Home Section */
         .home-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
+            max-width: 570px;
+            margin: 0 auto;
             height: 100%;
         }
 
-        .profile-container {
-            position: relative;
-            width: 160px;
-            height: 160px;
-            margin-bottom: 20px;
+        .profile-image {
+            width: 142px;
+            height: 142px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 22px;
+            border: 2px solid var(--secondary);
+            box-shadow: 0 0 18px rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
         }
 
-        .profile-img {
+        .profile-image:hover {
+            transform: rotate(5deg) scale(1.04);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-image img {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--white);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-            transition: all 0.5s ease;
-            filter: contrast(1.1) grayscale(0.3);
-        }
-
-        .profile-container:hover .profile-img {
-            transform: rotate(5deg) scale(1.05);
-            border-color: var(--white);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-            filter: contrast(1.2) grayscale(0);
         }
 
         .name {
             font-family: 'Pacifico', cursive;
-            font-size: 32px;
-            margin-bottom: 5px;
+            font-size: 2.35rem;
+            margin-bottom: 14px;
+            color: var(--secondary);
         }
 
-        .bio {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            max-width: 400px;
+        .verse {
+            font-size: 0.95rem;
+            line-height: 1.45;
+            margin-bottom: 18px;
+            font-style: italic;
+            color: #ccc;
+            max-width: 475px;
         }
 
         .status {
-            font-family: 'Bangers', cursive;
-            font-size: 24px;
-            letter-spacing: 2px;
-            color: var(--white);
-            margin-bottom: 20px;
+            font-size: 1.14rem;
+            margin-bottom: 22px;
+            color: var(--accent);
+            font-weight: bold;
         }
 
         .github-link {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--black);
-            color: var(--white);
-            border: 2px solid var(--white);
-            transition: all 0.3s ease;
+            gap: 8px;
+            color: var(--secondary);
             text-decoration: none;
+            font-size: 0.95rem;
+            padding: 9px 18px;
+            border: 1px solid var(--secondary);
+            border-radius: 18px;
+            transition: all 0.3s ease;
         }
 
         .github-link:hover {
-            background-color: var(--white);
-            color: var(--black);
-            transform: translateY(-5px) scale(1.1);
+            background: var(--secondary);
+            color: var(--primary);
+            transform: scale(1.04);
         }
 
-        .github-link i {
-            font-size: 20px;
+        .github-link svg {
+            width: 19px;
+            height: 19px;
         }
 
-        /* Gallery Tab - Modern Grid */
-        .gallery-content {
-            text-align: center;
+        /* Music Section */
+        .music-content {
+            max-width: 570px;
+            margin: 0 auto;
             height: 100%;
             display: flex;
             flex-direction: column;
         }
 
         .section-title {
-            font-family: 'Bangers', cursive;
-            font-size: 28px;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            text-align: center;
+            font-size: 1.7rem;
+            margin-bottom: 18px;
             position: relative;
             display: inline-block;
         }
@@ -361,650 +337,795 @@
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background-color: var(--white);
+            bottom: -7px;
+            left: 0;
+            width: 47px;
+            height: 2.5px;
+            background: var(--secondary);
         }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 120px;
-            gap: 10px;
-            margin-top: 20px;
-            flex: 1;
-        }
-
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .gallery-item:nth-child(1) {
-            grid-column: span 2;
-            grid-row: span 2;
-        }
-
-        .gallery-item:nth-child(2) {
-            grid-column: span 1;
-            grid-row: span 1;
-        }
-
-        .gallery-item:nth-child(3) {
-            grid-column: span 1;
-            grid-row: span 1;
-        }
-
-        .gallery-item:nth-child(4) {
-            grid-column: span 1;
-            grid-row: span 1;
-        }
-
-        .gallery-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.5s ease;
-            filter: grayscale(0.8);
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.03);
-            border-color: var(--white);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
-        }
-
-        .gallery-item:hover .gallery-img {
-            filter: grayscale(0);
-            transform: scale(1.1);
-        }
-
-        /* Music Tab - Comic Style Player */
-        .music-content {
-            text-align: center;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .player-container {
-            background-color: var(--black);
-            border-radius: 15px;
-            padding: 20px;
-            border: 2px solid var(--white);
-            margin-top: 10px;
+        .music-player {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 18px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        .track-list {
-            max-height: 180px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            padding-right: 5px;
-            flex: 1;
-        }
-
-        .track-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .track-list::-webkit-scrollbar-thumb {
-            background: var(--white);
-        }
-
-        .track-item {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--gray);
-            cursor: none;
-            transition: all 0.3s ease;
+        .player-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            background-color: rgba(255, 255, 255, 0.05);
+            margin-bottom: 14px;
         }
 
-        .track-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
+        .player-header svg {
+            width: 22px;
+            height: 22px;
+            margin-right: 9px;
+            fill: var(--secondary);
         }
 
-        .track-item.active {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-left: 3px solid var(--white);
+        .player-header h2 {
+            font-size: 1.14rem;
         }
 
         .track-info {
-            flex: 1;
-            text-align: left;
+            text-align: center;
+            margin-bottom: 14px;
         }
 
         .track-title {
-            font-weight: bold;
-            font-size: 14px;
-            font-family: 'Comic Neue', cursive;
+            font-size: 1.14rem;
+            margin-bottom: 4px;
         }
 
         .track-artist {
-            font-size: 12px;
-            color: var(--gray);
-            font-family: 'Comic Neue', cursive;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .progress-container {
+            height: 5px;
+            background: #444;
+            border-radius: 2.5px;
+            margin-bottom: 9px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--secondary);
+            border-radius: 2.5px;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            font-size: 0.76rem;
+            color: #aaa;
         }
 
         .player-controls {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 14px;
+            margin-bottom: 14px;
         }
 
         .control-btn {
             background: none;
             border: none;
-            color: var(--white);
-            font-size: 18px;
-            cursor: none;
-            padding: 8px;
-            border-radius: 50%;
+            color: var(--secondary);
+            cursor: pointer;
+            font-size: 1.14rem;
             transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
+            width: 33px;
+            height: 33px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid var(--white);
+            border-radius: 50%;
         }
 
         .control-btn:hover {
-            background-color: var(--white);
-            color: var(--black);
-            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.08);
         }
 
-        .play-btn {
-            background-color: var(--white);
-            color: var(--black);
-            width: 45px;
-            height: 45px;
-            font-size: 20px;
+        .play-pause {
+            font-size: 1.4rem;
+            background: var(--secondary);
+            color: var(--primary);
         }
 
-        .progress-container {
+        .play-pause:hover {
+            background: #e6e6e6;
+        }
+
+        .track-list {
+            max-height: 190px;
+            overflow-y: auto;
+            border-radius: 7px;
+            background: rgba(0, 0, 0, 0.3);
             flex: 1;
-            height: 6px;
-            background-color: var(--gray);
-            border-radius: 3px;
-            margin: 0 10px;
-            cursor: none;
-            position: relative;
-            border: 1px solid var(--white);
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar);
         }
 
-        .progress-bar {
-            height: 100%;
-            background-color: var(--white);
-            border-radius: 3px;
-            width: 0%;
-            transition: width 0.1s linear;
+        .track-list::-webkit-scrollbar {
+            width: 5px;
         }
 
-        .time-display {
-            font-size: 12px;
-            color: var(--gray);
-            min-width: 80px;
-            text-align: center;
-            font-family: 'Comic Neue', cursive;
+        .track-list::-webkit-scrollbar-track {
+            background: var(--scrollbar);
+            border-radius: 2.5px;
         }
 
-        .volume-control {
+        .track-list::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 2.5px;
+        }
+
+        .track-list::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        .track-item {
+            padding: 11px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-            justify-content: center;
+            font-size: 0.85rem;
         }
 
-        .volume-slider {
-            width: 100px;
-            -webkit-appearance: none;
-            height: 6px;
-            background: var(--gray);
-            border-radius: 3px;
-            border: 1px solid var(--white);
+        .track-item:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--white);
-            cursor: none;
-            border: 1px solid var(--black);
+        .track-item.active {
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .now-playing {
-            font-family: 'Bangers', cursive;
-            font-size: 18px;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            text-align: center;
-            background-color: var(--black);
-            padding: 5px 10px;
-            border-radius: 10px;
-            border: 2px solid var(--white);
-            display: inline-block;
-            margin: 0 auto 15px;
+        .track-item::before {
+            content: '▶';
+            margin-right: 9px;
+            font-size: 0.66rem;
+            color: var(--secondary);
+        }
+
+        /* Bible Verses Section */
+        .bible-content {
+            max-width: 570px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .verses-container {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .verses-container::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .verses-container::-webkit-scrollbar-track {
+            background: var(--scrollbar);
+            border-radius: 2.5px;
+        }
+
+        .verses-container::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 2.5px;
+        }
+
+        .verses-container::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        .verses-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .verses-header svg {
+            width: 22px;
+            height: 22px;
+            margin-right: 9px;
+            fill: var(--secondary);
+        }
+
+        .verses-header h2 {
+            font-size: 1.14rem;
+        }
+
+        .verse-item {
+            padding: 14px;
+            border-left: 3px solid var(--secondary);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0 7px 7px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .verse-item:hover {
+            transform: translateX(3px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .verse-text {
+            font-family: 'Comic Neue', cursive;
+            font-size: 0.95rem;
+            line-height: 1.45;
+            margin-bottom: 7px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .verse-ref {
+            font-size: 0.76rem;
+            color: #aaa;
+            text-align: left;
+            direction: ltr;
+            margin-top: 5px;
         }
 
         /* Alert System */
-        .alert-container {
+        .alert {
             position: fixed;
-            bottom: 20px;
+            top: 18px;
             left: 50%;
             transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.9);
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             z-index: 1000;
-        }
-
-        .comic-alert {
-            background-color: var(--white);
-            color: var(--black);
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: 2px solid var(--black);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            font-family: 'Bangers', cursive;
-            font-size: 16px;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            border: 1px solid var(--light-gray);
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
+            transition: opacity 0.3s ease;
         }
 
-        .comic-alert.show {
+        .alert.show {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        /* Welcome Modal */
-        .welcome-modal {
-            position: fixed;
+        .alert-icon {
+            width: 19px;
+            height: 19px;
+            fill: var(--secondary);
+        }
+
+        /* Background Animation */
+        .floating-shapes {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s ease;
+            z-index: -1;
+            overflow: hidden;
         }
 
-        .welcome-modal.active {
-            opacity: 1;
-            visibility: visible;
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
         }
 
-        .modal-content {
-            background-color: var(--white);
-            color: var(--black);
-            padding: 30px;
-            border-radius: 15px;
-            border: 3px solid var(--black);
-            max-width: 500px;
-            text-align: center;
-            transform: scale(0.8);
-            transition: transform 0.5s ease;
+        .shape:nth-child(1) {
+            width: 76px;
+            height: 76px;
+            top: 10%;
+            left: 85%;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
 
-        .welcome-modal.active .modal-content {
-            transform: scale(1);
+        .shape:nth-child(2) {
+            width: 114px;
+            height: 114px;
+            top: 65%;
+            left: 10%;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
         }
 
-        .modal-title {
-            font-family: 'Bangers', cursive;
-            font-size: 32px;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
+        .shape:nth-child(3) {
+            width: 95px;
+            height: 95px;
+            top: 20%;
+            left: 15%;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
         }
 
-        .modal-text {
-            font-size: 16px;
-            margin-bottom: 20px;
-            line-height: 1.5;
+        .shape:nth-child(4) {
+            width: 57px;
+            height: 57px;
+            top: 75%;
+            left: 80%;
+            clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
         }
 
-        .modal-btn {
-            background-color: var(--black);
-            color: var(--white);
-            border: none;
-            padding: 10px 25px;
-            font-family: 'Bangers', cursive;
-            font-size: 16px;
-            letter-spacing: 1px;
-            border-radius: 20px;
-            cursor: none;
-            transition: all 0.3s ease;
+        .shape:nth-child(5) {
+            width: 142px;
+            height: 142px;
+            top: 45%;
+            left: 60%;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
         }
 
-        .modal-btn:hover {
-            background-color: var(--white);
-            color: var(--black);
-            transform: translateY(-3px);
-            border: 2px solid var(--black);
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(4px, 4px) rotate(4px);
+            }
+            50% {
+                transform: translate(8px, 2px) rotate(0deg);
+            }
+            75% {
+                transform: translate(4px, 6px) rotate(-4px);
+            }
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                height: 90vh;
+            }
+            
+            .sidebar {
+                width: 85px;
+            }
+            
+            .logo {
+                width: 47px;
+                height: 47px;
+            }
+            
+            .content {
+                padding: 18px;
+            }
+        }
+
         @media (max-width: 768px) {
-            .header {
+            body {
+                padding: 8px;
+            }
+            
+            .container {
                 flex-direction: column;
-                gap: 15px;
+                height: auto;
+                min-height: 100vh;
             }
             
-            .gallery-grid {
-                grid-template-columns: 1fr;
-                grid-auto-rows: 150px;
-            }
-
-            .gallery-item:nth-child(1) {
-                grid-column: span 1;
-            }
-
-            .content-container {
-                height: 450px;
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                padding: 14px;
+                border-radius: 12px 12px 0 0;
+                border-right: none;
+                border-bottom: 1px solid var(--light-gray);
+                height: 76px;
             }
             
-            .tab-content {
-                padding: 20px;
+            .logo-section {
+                height: auto;
+                width: 25%;
+                margin-bottom: 0;
+            }
+            
+            .logo {
+                width: 47px;
+                height: 47px;
+            }
+            
+            .nav-icons {
+                height: auto;
+                width: 75%;
+                flex-direction: row;
+            }
+            
+            .nav-item {
+                height: 100%;
+            }
+            
+            .nav-item.active::after {
+                right: auto;
+                top: auto;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 38px;
+                height: 3px;
+                border-radius: 2px 2px 0 0;
+            }
+            
+            .content {
+                padding: 18px;
+            }
+            
+            .datetime-display {
+                position: relative;
+                top: auto;
+                right: auto;
+                text-align: center;
+                margin-bottom: 18px;
+            }
+            
+            .name {
+                font-size: 1.9rem;
+            }
+            
+            .verse {
+                font-size: 0.85rem;
+            }
+            
+            .profile-image {
+                width: 114px;
+                height: 114px;
+            }
+            
+            .music-player, .verses-container {
+                padding: 14px;
             }
         }
 
         @media (max-width: 480px) {
-            .main-container {
-                width: 95%;
+            .sidebar {
+                height: 66px;
+                padding: 9px;
             }
             
-            .tab-content {
-                padding: 15px;
+            .logo {
+                width: 38px;
+                height: 38px;
             }
             
-            .profile-container {
-                width: 130px;
-                height: 130px;
+            .icon {
+                width: 19px;
+                height: 19px;
+            }
+            
+            .nav-label {
+                font-size: 8px;
+            }
+            
+            .content {
+                padding: 14px;
+            }
+            
+            .time {
+                font-size: 1.4rem;
+            }
+            
+            .date {
+                font-size: 0.76rem;
             }
             
             .name {
-                font-size: 28px;
+                font-size: 1.7rem;
             }
             
-            .status {
-                font-size: 20px;
+            .profile-image {
+                width: 95px;
+                height: 95px;
             }
             
-            .player-controls {
-                flex-wrap: wrap;
+            .section-title {
+                font-size: 1.4rem;
             }
+            
+            .music-player, .verses-container {
+                padding: 11px;
+            }
+            
+            .verse-text {
+                font-size: 0.85rem;
+            }
+        }
 
-            .progress-container {
-                order: 3;
-                flex-basis: 100%;
-                margin: 10px 0;
+        @media (max-width: 360px) {
+            .container {
+                border-radius: 8px;
             }
             
-            .content-container {
-                height: 400px;
+            .sidebar {
+                border-radius: 8px 8px 0 0;
+                height: 60px;
+            }
+            
+            .logo {
+                width: 34px;
+                height: 34px;
+            }
+            
+            .icon {
+                width: 17px;
+                height: 17px;
+                margin-bottom: 3px;
+            }
+            
+            .nav-label {
+                font-size: 7px;
+            }
+            
+            .content {
+                padding: 12px;
+            }
+            
+            .name {
+                font-size: 1.5rem;
+            }
+            
+            .profile-image {
+                width: 85px;
+                height: 85px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-
-    <!-- Background Elements -->
-    <div class="comic-bg">
-        <div class="comic-dot"></div>
-        <div class="comic-dot"></div>
-        <div class="comic-dot"></div>
-        <div class="comic-dot"></div>
-        <div class="comic-dot"></div>
+    <!-- Alert System -->
+    <div class="alert" id="welcomeAlert">
+        <svg class="alert-icon" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <span>Welcome to Pavly's Portfolio!</span>
     </div>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- Header with Date and Navigation -->
-        <div class="header">
-            <div class="datetime" id="datetime">Loading...</div>
-            <div class="nav-tabs">
-                <button class="tab-btn active" data-tab="home">Home</button>
-                <button class="tab-btn" data-tab="gallery">Gallery</button>
-                <button class="tab-btn" data-tab="music">Music</button>
+    <div class="alert" id="tabSwitchAlert">
+        <svg class="alert-icon" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <span id="tabSwitchMessage">Switching tabs</span>
+    </div>
+
+    <div class="alert" id="musicAlert">
+        <svg class="alert-icon" viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+        <span id="musicMessage">Now playing</span>
+    </div>
+
+    <div class="container">
+        <!-- Compact Sidebar - Half Height -->
+        <div class="sidebar">
+            <!-- Logo Section - Top Quarter -->
+            <div class="logo-section">
+                <div class="logo">
+                    <!-- Logo image as background -->
+                </div>
+            </div>
+            
+            <!-- Navigation Icons - Remaining Three Quarters -->
+            <div class="nav-icons">
+                <div class="nav-item active" data-target="home">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    <span class="nav-label">Home</span>
+                </div>
+                <div class="nav-item" data-target="music">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                    <span class="nav-label">Music</span>
+                </div>
+                <div class="nav-item" data-target="bible">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M18,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V4C20,2.9,19.1,2,18,2z M9,4h2v5l-1-0.75L9,9V4z M18,20H6V4 h1v9l3-2.25L13,13V4h5V20z"/>
+                    </svg>
+                    <span class="nav-label">Verses</span>
+                </div>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="content-container">
-            <!-- Home Tab -->
-            <div class="tab-content active" id="home-content">
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Date & Time Display -->
+            <div class="datetime-display">
+                <div class="time" id="currentTime">00:00:00 AM</div>
+                <div class="date" id="currentDate">Loading...</div>
+            </div>
+
+            <!-- Home Section -->
+            <div class="content-section active" id="home">
                 <div class="home-content">
-                    <div class="profile-container">
-                        <img src="https://xatimg.com/image/rWDHtSw2pqG2.jpg" alt="Pavly" class="profile-img">
+                    <div class="profile-image">
+                        <img src="https://xatimg.com/image/rWDHtSw2pqG2.jpg" alt="Profile Picture">
                     </div>
                     <h1 class="name">Pavly</h1>
-                    <p class="bio">Pola, 33 age, Texas USA, Content Creator on YouTube. Passionate about creating engaging content and sharing my journey with the world.</p>
-                    <div class="status">God is love</div>
+                    <p class="verse">"But those who hope in the LORD will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint." (Isaiah 40:31)</p>
+                    <div class="status">GOD IS LOVE</div>
                     <a href="https://github.com/bolae700" class="github-link" target="_blank">
-                        <i class="fab fa-github"></i>
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        GitHub
                     </a>
                 </div>
             </div>
 
-            <!-- Gallery Tab -->
-            <div class="tab-content" id="gallery-content">
-                <div class="gallery-content">
-                    <h2 class="section-title">MY GALLERY</h2>
-                    <div class="gallery-grid">
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Comic Art 1" class="gallery-img">
+            <!-- Music Section -->
+            <div class="content-section" id="music">
+                <div class="music-content">
+                    <h2 class="section-title">Music Player</h2>
+                    <div class="music-player">
+                        <div class="player-header">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                            </svg>
+                            <h2>Now Playing</h2>
                         </div>
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Comic Art 2" class="gallery-img">
+                        <div class="track-info">
+                            <div class="track-title">Select a track</div>
+                            <div class="track-artist">Artist</div>
                         </div>
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1580477667995-2b94f01c9516?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Comic Art 3" class="gallery-img">
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
                         </div>
-                        <div class="gallery-item">
-                            <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Comic Art 4" class="gallery-img">
+                        <div class="time-display">
+                            <span class="current-time">0:00</span>
+                            <span class="duration">0:00</span>
+                        </div>
+                        <div class="player-controls">
+                            <button class="control-btn prev-btn">⏮</button>
+                            <button class="control-btn play-pause">▶</button>
+                            <button class="control-btn next-btn">⏭</button>
+                        </div>
+                        <div class="track-list">
+                            <!-- Tracks will be populated by JavaScript -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Music Tab -->
-            <div class="tab-content" id="music-content">
-                <div class="music-content">
-                    <h2 class="section-title">MUSIC PLAYER</h2>
-                    <div class="now-playing" id="now-playing">Select a track to play</div>
-                    <div class="player-container">
-                        <div class="track-list" id="track-list">
-                            <!-- Track list will be populated by JavaScript -->
+            <!-- Bible Verses Section -->
+            <div class="content-section" id="bible">
+                <div class="bible-content">
+                    <h2 class="section-title">Bible Verses</h2>
+                    <div class="verses-container">
+                        <div class="verses-header">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M18,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V4C20,2.9,19.1,2,18,2z M9,4h2v5l-1-0.75L9,9V4z M18,20H6V4 h1v9l3-2.25L13,13V4h5V20z"/>
+                            </svg>
+                            <h2>آيات من الكتاب المقدس</h2>
                         </div>
-                        <div class="player-controls">
-                            <button class="control-btn prev-btn">⏮</button>
-                            <button class="control-btn play-btn">▶</button>
-                            <button class="control-btn next-btn">⏭</button>
-                            <div class="progress-container">
-                                <div class="progress-bar"></div>
-                            </div>
-                            <div class="time-display">0:00 / 0:00</div>
+                        <div class="verse-item">
+                            <p class="verse-text">وأما منتظرو الرب فيجددون قوة. يرفعون أجنحة كالنسور. يركضون ولا يتعبون. يمشون ولا يعيون.</p>
+                            <p class="verse-ref">إشعياء 40: 31</p>
                         </div>
-                        <div class="volume-control">
-                            <span>🔊</span>
-                            <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="0.7">
+                        <div class="verse-item">
+                            <p class="verse-text">أستطيع كل شيء في المسيح الذي يقويني.</p>
+                            <p class="verse-ref">فيلبي 4: 13</p>
+                        </div>
+                        <div class="verse-item">
+                            <p class="verse-text">توكل على الرب بكل قلبك وعلى فهمك لا تعتمد.</p>
+                            <p class="verse-ref">أمثال 3: 5</p>
+                        </div>
+                        <div class="verse-item">
+                            <p class="verse-text">لأنه هكذا أحب الله العالم حتى بذل ابنه الوحيد لكي لا يهلك كل من يؤمن به بل تكون له الحياة الأبدية.</p>
+                            <p class="verse-ref">يوحنا 3: 16</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Alert System -->
-    <div class="alert-container" id="alert-container">
-        <!-- Alerts will be added here dynamically -->
-    </div>
-
-    <!-- Welcome Modal -->
-    <div class="welcome-modal active" id="welcome-modal">
-        <div class="modal-content">
-            <h2 class="modal-title">WELCOME TO MY WORLD!</h2>
-            <p class="modal-text">Step into my creative universe where manga aesthetics meet modern design. Explore my portfolio and enjoy the experience!</p>
-            <button class="modal-btn" id="modal-close-btn">ENTER PORTFOLIO</button>
+        <!-- Background Animation -->
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
         </div>
     </div>
 
     <script>
-        // Audio Context for Sound Effects
-        let audioContext;
-        try {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        } catch (e) {
-            console.log('Web Audio API is not supported in this browser');
-        }
-
-        // Function to create sound effects
-        function playSound(frequency, duration, type = 'sine') {
-            if (!audioContext) return;
-            
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = type;
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
-        }
-
-        // Custom Cursor - Smaller and more professional
-        const cursor = document.querySelector('.cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // Add hover effect to interactive elements
-        const interactiveElements = document.querySelectorAll('button, a, .gallery-item, .track-item, .volume-slider');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.classList.add('hover');
-                playSound(600, 0.1, 'square');
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hover');
+        // Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons and sections
+                document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding section
+                this.classList.add('active');
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                
+                // Show tab switch alert
+                showAlert('tabSwitchAlert', `Switched to ${this.querySelector('.nav-label').textContent}`);
+                
+                // Play tab switch sound
+                playTabSwitchSound();
             });
         });
 
-        // Tab Navigation
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabId = btn.getAttribute('data-tab');
-                
-                // Update active tab
-                tabBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Show corresponding content
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                    if (content.id === `${tabId}-content`) {
-                        content.classList.add('active');
-                    }
-                });
-                
-                // Play sound and show alert
-                playSound(800, 0.2, 'sawtooth');
-                showAlert(`Switched to ${tabId.toUpperCase()} tab!`);
-            });
-        });
-
-        // Date and Time
+        // Date and time functionality - 12-hour format
         function updateDateTime() {
             const now = new Date();
-            const options = { 
-                weekday: 'short', 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            document.getElementById('datetime').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Format time in 12-hour format
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+            document.getElementById('currentTime').textContent = timeString;
+            
+            // Format date
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString('en-US', dateOptions);
+            document.getElementById('currentDate').textContent = dateString;
         }
-        setInterval(updateDateTime, 1000);
+        
         updateDateTime();
+        setInterval(updateDateTime, 1000);
 
-        // Alert System
-        function showAlert(message) {
-            const alertContainer = document.getElementById('alert-container');
-            const alert = document.createElement('div');
-            alert.className = 'comic-alert';
-            alert.textContent = message;
+        // Alert functionality
+        function showAlert(alertId, message) {
+            const alert = document.getElementById(alertId);
+            if (alertId === 'tabSwitchAlert') {
+                document.getElementById('tabSwitchMessage').textContent = message;
+            } else if (alertId === 'musicAlert') {
+                document.getElementById('musicMessage').textContent = message;
+            }
             
-            alertContainer.appendChild(alert);
+            alert.classList.add('show');
             
-            // Trigger animation
-            setTimeout(() => {
-                alert.classList.add('show');
-            }, 10);
-            
-            // Play alert sound
-            playSound(1000, 0.3, 'triangle');
-            
-            // Remove alert after 3 seconds
             setTimeout(() => {
                 alert.classList.remove('show');
-                setTimeout(() => {
-                    if (alert.parentNode) {
-                        alert.parentNode.removeChild(alert);
-                    }
-                }, 300);
             }, 3000);
         }
 
-        // Welcome Modal
-        const welcomeModal = document.getElementById('welcome-modal');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
-
-        modalCloseBtn.addEventListener('click', () => {
-            welcomeModal.classList.remove('active');
-            playSound(500, 0.5, 'sine');
-            showAlert('Welcome to my creative space! Enjoy exploring!');
+        // Show welcome alert on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                showAlert('welcomeAlert', 'Welcome to Pavly\'s Portfolio!');
+                playWelcomeSound();
+            }, 1000);
         });
 
-        // Music Player
+        // Music player functionality
         const tracks = [
             { url: "https://audio.jukehost.co.uk/rbodvVpUNsXhuPM4YF4W3xiGyuPcQiSu", title: "El Saber Tayb", artist: "George Wasuf" },
             { url: "https://audio.jukehost.co.uk/QUEE10oqvf4F50S7mTmF7IfuicfVhV2B", title: "Batali Baa", artist: "Ramy Sabry" },
@@ -1015,153 +1136,189 @@
             { url: "https://audio.jukehost.co.uk/GOzONzgMkJgOFZgbzmCAPU3uXpKKcYAh", title: "Unstoppable", artist: "Sia" },
         ];
 
-        const trackList = document.getElementById('track-list');
-        const playBtn = document.querySelector('.play-btn');
-        const prevBtn = document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.next-btn');
-        const progressBar = document.querySelector('.progress-bar');
-        const progressContainer = document.querySelector('.progress-container');
-        const timeDisplay = document.querySelector('.time-display');
-        const volumeSlider = document.querySelector('.volume-slider');
-        const nowPlaying = document.getElementById('now-playing');
-
+        const audio = new Audio();
         let currentTrackIndex = 0;
         let isPlaying = false;
-        let audio = new Audio();
 
         // Populate track list
+        const trackList = document.querySelector('.track-list');
         tracks.forEach((track, index) => {
             const trackItem = document.createElement('div');
-            trackItem.className = 'track-item';
+            trackItem.classList.add('track-item');
             if (index === 0) trackItem.classList.add('active');
-            
-            trackItem.innerHTML = `
-                <div class="track-info">
-                    <div class="track-title">${track.title}</div>
-                    <div class="track-artist">${track.artist}</div>
-                </div>
-                <div class="track-duration">--:--</div>
-            `;
-            
+            trackItem.textContent = `${track.title} - ${track.artist}`;
             trackItem.addEventListener('click', () => {
                 playTrack(index);
             });
-            
             trackList.appendChild(trackItem);
         });
 
-        // Play a specific track
+        // Play/Pause button
+        const playPauseBtn = document.querySelector('.play-pause');
+        playPauseBtn.addEventListener('click', togglePlayPause);
+
+        // Previous button
+        document.querySelector('.prev-btn').addEventListener('click', () => {
+            playTrack((currentTrackIndex - 1 + tracks.length) % tracks.length);
+        });
+
+        // Next button
+        document.querySelector('.next-btn').addEventListener('click', () => {
+            playTrack((currentTrackIndex + 1) % tracks.length);
+        });
+
+        // Progress bar
+        const progressContainer = document.querySelector('.progress-container');
+        const progressBar = document.querySelector('.progress-bar');
+        const currentTimeEl = document.querySelector('.current-time');
+        const durationEl = document.querySelector('.duration');
+
+        progressContainer.addEventListener('click', setProgress);
+
+        audio.addEventListener('timeupdate', updateProgress);
+        audio.addEventListener('ended', () => {
+            playTrack((currentTrackIndex + 1) % tracks.length);
+        });
+
         function playTrack(index) {
-            if (index < 0 || index >= tracks.length) return;
-            
-            // Update active track
-            document.querySelectorAll('.track-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            document.querySelectorAll('.track-item')[index].classList.add('active');
-            
-            // Load and play track
             currentTrackIndex = index;
             audio.src = tracks[index].url;
-            audio.load();
+            
+            // Update track info
+            document.querySelector('.track-title').textContent = tracks[index].title;
+            document.querySelector('.track-artist').textContent = tracks[index].artist;
+            
+            // Update active track in list
+            document.querySelectorAll('.track-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            
             audio.play();
             isPlaying = true;
-            playBtn.textContent = '⏸';
+            playPauseBtn.textContent = '⏸';
             
-            // Update now playing
-            nowPlaying.textContent = `Now Playing: ${tracks[index].title} - ${tracks[index].artist}`;
+            // Show music alert
+            showAlert('musicAlert', `Now playing: ${tracks[index].title}`);
             
-            // Show alert
-            showAlert(`Now playing: ${tracks[index].title}`);
-            
-            // Play sound effect
-            playSound(700, 0.2, 'sine');
+            // Play music start sound
+            playMusicStartSound();
         }
 
-        // Toggle play/pause
-        playBtn.addEventListener('click', () => {
+        function togglePlayPause() {
             if (isPlaying) {
                 audio.pause();
-                playBtn.textContent = '▶';
+                playPauseBtn.textContent = '▶';
             } else {
                 audio.play();
-                playBtn.textContent = '⏸';
+                playPauseBtn.textContent = '⏸';
             }
             isPlaying = !isPlaying;
-            playSound(600, 0.1, 'square');
-        });
+        }
 
-        // Previous track
-        prevBtn.addEventListener('click', () => {
-            let newIndex = currentTrackIndex - 1;
-            if (newIndex < 0) newIndex = tracks.length - 1;
-            playTrack(newIndex);
-        });
+        function updateProgress() {
+            const { currentTime, duration } = audio;
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            
+            // Update time display
+            currentTimeEl.textContent = formatTime(currentTime);
+            durationEl.textContent = formatTime(duration);
+        }
 
-        // Next track
-        nextBtn.addEventListener('click', () => {
-            let newIndex = currentTrackIndex + 1;
-            if (newIndex >= tracks.length) newIndex = 0;
-            playTrack(newIndex);
-        });
-
-        // Update progress bar
-        audio.addEventListener('timeupdate', () => {
-            if (audio.duration) {
-                const progressPercent = (audio.currentTime / audio.duration) * 100;
-                progressBar.style.width = `${progressPercent}%`;
-                
-                // Update time display
-                const currentTime = formatTime(audio.currentTime);
-                const duration = formatTime(audio.duration);
-                timeDisplay.textContent = `${currentTime} / ${duration}`;
-            }
-        });
-
-        // Seek functionality
-        progressContainer.addEventListener('click', (e) => {
-            const width = progressContainer.clientWidth;
+        function setProgress(e) {
+            const width = this.clientWidth;
             const clickX = e.offsetX;
             const duration = audio.duration;
             
             audio.currentTime = (clickX / width) * duration;
-        });
-
-        // Volume control
-        volumeSlider.addEventListener('input', () => {
-            audio.volume = volumeSlider.value;
-        });
-
-        // Format time (seconds to MM:SS)
-        function formatTime(seconds) {
-            const min = Math.floor(seconds / 60);
-            const sec = Math.floor(seconds % 60);
-            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
         }
 
-        // Auto-play first track when music tab is opened
-        document.querySelector('.tab-btn[data-tab="music"]').addEventListener('click', () => {
-            if (!audio.src) {
-                playTrack(0);
-            }
-        });
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
 
-        // Initialize with first track loaded (but not playing)
-        audio.volume = volumeSlider.value;
-
-        // Add click sound to all buttons
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', () => {
-                playSound(400, 0.1, 'square');
+        // Web Audio API for professional sound effects
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Create professional sound effects
+        function playWelcomeSound() {
+            // A pleasant chord progression
+            playChord([523.25, 659.25, 783.99], 0.2, 0.3); // C Major chord
+        }
+        
+        function playTabSwitchSound() {
+            // A subtle transition sound
+            playTone(587.33, 0.1, 0.15); // D5
+            setTimeout(() => playTone(698.46, 0.1, 0.15), 80); // F5
+        }
+        
+        function playMusicStartSound() {
+            // An engaging start sound
+            playTone(783.99, 0.1, 0.2); // G5
+            setTimeout(() => playTone(1046.50, 0.15, 0.2), 100); // C6
+            setTimeout(() => playTone(1318.51, 0.2, 0.2), 200); // E6
+        }
+        
+        function playTone(frequency, duration, volume) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        function playChord(frequencies, duration, volume) {
+            frequencies.forEach(freq => {
+                playTone(freq, duration, volume / frequencies.length);
             });
-        });
+        }
 
-        // Show welcome message after modal closes
-        setTimeout(() => {
-            if (welcomeModal.classList.contains('active')) {
-                showAlert('Welcome to my creative space! Enjoy exploring!');
+        // Test all functionality on mobile
+        function testMobileFunctionality() {
+            // Test touch events
+            document.addEventListener('touchstart', function() {}, {passive: true});
+            
+            // Test audio context on mobile
+            document.addEventListener('click', function() {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            });
+            
+            // Test orientation change
+            window.addEventListener('orientationchange', function() {
+                setTimeout(updateLayout, 300);
+            });
+            
+            function updateLayout() {
+                // Adjust layout for orientation changes
+                const container = document.querySelector('.container');
+                if (window.innerHeight > window.innerWidth) {
+                    // Portrait mode
+                    container.style.minHeight = '100vh';
+                } else {
+                    // Landscape mode
+                    container.style.minHeight = '90vh';
+                }
             }
-        }, 500);
+        }
+        
+        // Initialize mobile testing
+        testMobileFunctionality();
     </script>
 </body>
 </html>
