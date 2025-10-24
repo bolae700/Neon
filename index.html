@@ -1,1147 +1,1010 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAVLY | Portfolio</title>
+    <title>Pavly | Manga Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Bangers&family=Comic+Neue:wght@400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS Variables */
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #888888;
+            --dark-gray: #1a1a1a;
+            --light-gray: #f0f0f0;
+            --accent: #ff3e3e;
+        }
+
+        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --black: #000000;
-            --white: #ffffff;
-            --gray-dark: #222222;
-            --gray-light: #f5f5f5;
-            --gray-medium: #888888;
-            --accent: #333333;
-            --accent-glow: rgba(0, 0, 0, 0.1);
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--white);
-            color: var(--black);
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            cursor: none;
             min-height: 100vh;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
-            padding: 15px;
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', sans-serif;
-            position: relative;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.03) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(0, 0, 0, 0.03) 0%, transparent 20%);
+            padding: 20px;
         }
 
-        .container {
+        /* Custom Cursor - Smaller and more professional */
+        .cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            transform: rotate(45deg);
+            background-color: var(--white);
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease, width 0.1s ease, height 0.1s ease;
+        }
+
+        .cursor.hover {
+            transform: rotate(45deg) scale(1.5);
+            background-color: var(--white);
+            width: 10px;
+            height: 10px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-gray);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--white);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray);
+        }
+
+        /* Background Effects */
+        .comic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 550px;
-            margin: 0 auto;
-            position: relative;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
         }
 
-        /* تصميم شريط الرأس */
-        .header-bar {
+        .comic-dot {
+            position: absolute;
+            background-color: var(--white);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .comic-dot:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            width: 6px;
+            height: 6px;
+            animation-delay: 0s;
+        }
+
+        .comic-dot:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            width: 8px;
+            height: 8px;
+            animation-delay: -3s;
+            animation-direction: reverse;
+        }
+
+        .comic-dot:nth-child(3) {
+            top: 30%;
+            left: 70%;
+            width: 5px;
+            height: 5px;
+            animation-delay: -7s;
+        }
+
+        .comic-dot:nth-child(4) {
+            top: 70%;
+            left: 10%;
+            width: 7px;
+            height: 7px;
+            animation-delay: -10s;
+            animation-direction: reverse;
+        }
+
+        .comic-dot:nth-child(5) {
+            top: 20%;
+            left: 40%;
+            width: 4px;
+            height: 4px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(10px, 15px);
+            }
+            50% {
+                transform: translate(20px, 5px);
+            }
+            75% {
+                transform: translate(5px, 20px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        /* Main Container - Centered */
+        .main-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Header with Date and Navigation */
+        .header {
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            width: 100%;
+            margin-bottom: 30px;
         }
 
-        /* شريط الوقت والتاريخ */
-        .datetime-bar {
-            background: var(--white);
-            border: 2px solid var(--black);
-            padding: 8px 12px;
-            box-shadow: 4px 4px 0 var(--black);
-            font-weight: 800;
-            font-size: 0.85rem;
-            z-index: 10;
-            text-align: center;
-            flex-shrink: 0;
+        /* Date and Time - Modern Style */
+        .datetime {
+            font-family: 'Bangers', cursive;
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: var(--white);
+            padding: 8px 15px;
+            background-color: var(--dark-gray);
+            border-radius: 20px;
+            border: 2px solid var(--white);
+            box-shadow: 3px 3px 0 var(--dark-gray);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background-color: var(--dark-gray);
+            border-radius: 25px;
+            padding: 5px;
+            border: 2px solid var(--white);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .tab-btn {
+            padding: 8px 20px;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-family: 'Bangers', cursive;
+            font-size: 16px;
+            letter-spacing: 1px;
+            cursor: none;
+            border-radius: 20px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .datetime-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .datetime-bar:hover::before {
-            left: 100%;
-        }
-
-        .time {
-            font-size: 1rem;
-            margin-bottom: 2px;
-            font-weight: 900;
-        }
-
-        .date {
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        /* تصميم الشريط العلوي */
-        .navbar {
-            display: flex;
-            justify-content: center;
-            flex-grow: 1;
-            margin: 0 15px;
-        }
-
-        .nav-tabs {
-            display: flex;
-            background: var(--white);
-            border-radius: 0;
-            padding: 4px;
-            border: 3px solid var(--black);
-            box-shadow: 6px 6px 0 var(--black);
-            position: relative;
-        }
-
-        .nav-tabs::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 4px;
-            right: 4px;
-            height: 8px;
-            background: var(--black);
-            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
-        }
-
-        .nav-tab {
-            padding: 8px 16px;
-            margin: 0 2px;
-            cursor: pointer;
-            font-weight: 800;
-            transition: all 0.2s ease;
+        .tab-btn:hover {
             color: var(--black);
-            position: relative;
-            background: var(--white);
-            border: 2px solid var(--black);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-tab.active {
-            background: var(--black);
-            color: var(--white);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px var(--accent-glow);
-        }
-
-        .nav-tab:not(.active):hover {
-            background: var(--gray-light);
+            background-color: var(--white);
             transform: translateY(-2px);
         }
 
-        /* تصميم المحتوى - مساحة موحدة */
-        .content {
-            background: var(--white);
-            border-radius: 0;
-            padding: 25px;
-            box-shadow: 8px 8px 0 var(--black);
-            border: 3px solid var(--black);
-            position: relative;
-            margin-bottom: 30px;
-            min-height: 500px;
-            height: 500px;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
+        .tab-btn.active {
+            color: var(--black);
+            background-color: var(--white);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .content::before {
-            content: '';
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            right: -4px;
-            bottom: -4px;
-            border: 2px solid var(--gray-medium);
-            z-index: -1;
+        /* Main Content - Fixed Size */
+        .content-container {
+            width: 100%;
+            max-width: 700px;
+            height: 500px;
+            background-color: var(--dark-gray);
+            border-radius: 20px;
+            border: 2px solid var(--white);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
         }
 
         .tab-content {
             display: none;
-            animation: slideIn 0.4s ease;
-            width: 100%;
+            animation: fadeIn 0.5s ease;
+            padding: 30px;
             height: 100%;
             overflow-y: auto;
         }
 
         .tab-content.active {
-            display: flex;
-            flex-direction: column;
+            display: block;
         }
 
-        @keyframes slideIn {
+        @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* تصميم الصفحة الرئيسية */
+        /* Home Tab - Centered Layout */
         .home-content {
-            text-align: center;
-            width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: center;
+            text-align: center;
+            height: 100%;
         }
 
         .profile-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
             position: relative;
-        }
-
-        .profile-image-wrapper {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            border-radius: 0;
-            overflow: hidden;
-            border: 3px solid var(--black);
-            box-shadow: 5px 5px 0 var(--black);
-            transition: all 0.3s ease;
-            z-index: 2;
-        }
-
-        .profile-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        /* تأثيرات Glitch محسنة ومقتصرة على الصورة فقط */
-        .profile-image-wrapper:hover {
-            transform: rotate(-2deg) scale(1.03);
-            box-shadow: 7px 7px 0 var(--black);
-        }
-
-        .profile-image-wrapper:hover .profile-image {
-            filter: grayscale(0%);
-        }
-
-        /* تأثير Glitch محسن - يقتصر على الصورة فقط */
-        .profile-image-wrapper:hover::before,
-        .profile-image-wrapper:hover::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            mix-blend-mode: overlay;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .profile-image-wrapper:hover::before {
-            animation: glitch-effect-1 0.8s infinite;
-            background: linear-gradient(90deg, transparent 0%, transparent 45%, 
-                    rgba(255, 0, 0, 0.3) 45%, rgba(255, 0, 0, 0.3) 46%, 
-                    transparent 46%, transparent 55%,
-                    rgba(0, 255, 0, 0.3) 55%, rgba(0, 255, 0, 0.3) 56%,
-                    transparent 56%, transparent 100%);
-        }
-
-        .profile-image-wrapper:hover::after {
-            animation: glitch-effect-2 1.2s infinite;
-            background: linear-gradient(90deg, transparent 0%, transparent 15%, 
-                    rgba(0, 0, 255, 0.3) 15%, rgba(0, 0, 255, 0.3) 16%, 
-                    transparent 16%, transparent 75%,
-                    rgba(255, 255, 0, 0.3) 75%, rgba(255, 255, 0, 0.3) 76%,
-                    transparent 76%, transparent 100%);
-        }
-
-        @keyframes glitch-effect-1 {
-            0% {
-                transform: translate(0);
-                opacity: 0.7;
-            }
-            20% {
-                transform: translate(-2px, 1px);
-                opacity: 0.8;
-            }
-            40% {
-                transform: translate(2px, -1px);
-                opacity: 0.6;
-            }
-            60% {
-                transform: translate(-1px, 2px);
-                opacity: 0.9;
-            }
-            80% {
-                transform: translate(1px, -2px);
-                opacity: 0.5;
-            }
-            100% {
-                transform: translate(0);
-                opacity: 0.7;
-            }
-        }
-
-        @keyframes glitch-effect-2 {
-            0% {
-                transform: translate(0);
-                opacity: 0.7;
-            }
-            25% {
-                transform: translate(2px, -1px);
-                opacity: 0.5;
-            }
-            50% {
-                transform: translate(-2px, 1px);
-                opacity: 0.9;
-            }
-            75% {
-                transform: translate(1px, 2px);
-                opacity: 0.6;
-            }
-            100% {
-                transform: translate(0);
-                opacity: 0.7;
-            }
-        }
-
-        .speech-bubble {
-            position: absolute;
-            background: var(--white);
-            border: 2px solid var(--black);
-            border-radius: 0;
-            padding: 10px;
             width: 160px;
-            text-align: center;
-            box-shadow: 4px 4px 0 var(--black);
-            z-index: 1;
-            font-weight: bold;
-            font-size: 0.85rem;
-            animation: float 3s ease-in-out infinite;
+            height: 160px;
+            margin-bottom: 20px;
         }
 
-        .bubble-left {
-            top: 15px;
-            left: 5px;
-            transform: rotate(-5deg);
-            animation-delay: 0.5s;
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--white);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
+            filter: contrast(1.1) grayscale(0.3);
         }
 
-        .bubble-right {
-            bottom: 5px;
-            right: 5px;
-            transform: rotate(3deg);
-            animation-delay: 1s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-5px) rotate(-5deg); }
-        }
-
-        .bubble-left::after, .bubble-right::after {
-            content: '';
-            position: absolute;
-            border-style: solid;
-        }
-
-        .bubble-left::after {
-            top: 50%;
-            right: -15px;
-            border-width: 8px 0 8px 15px;
-            border-color: transparent transparent transparent var(--black);
-            transform: translateY(-50%);
-        }
-
-        .bubble-right::after {
-            top: 50%;
-            left: -15px;
-            border-width: 8px 15px 8px 0;
-            border-color: transparent var(--black) transparent transparent;
-            transform: translateY(-50%);
+        .profile-container:hover .profile-img {
+            transform: rotate(5deg) scale(1.05);
+            border-color: var(--white);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+            filter: contrast(1.2) grayscale(0);
         }
 
         .name {
-            font-size: 2.2rem;
-            font-weight: 900;
-            margin-bottom: 12px;
-            color: var(--black);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative;
-            display: inline-block;
-        }
-
-        .name::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--black);
+            font-family: 'Pacifico', cursive;
+            font-size: 32px;
+            margin-bottom: 5px;
         }
 
         .bio {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            color: var(--black);
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
-            border: 2px dashed var(--black);
-            padding: 12px;
-            background: var(--gray-light);
-            position: relative;
-        }
-
-        .bio::before {
-            content: '"';
-            font-size: 2rem;
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            color: var(--black);
-            font-family: serif;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            max-width: 400px;
         }
 
         .status {
-            display: inline-block;
-            padding: 6px 15px;
-            background: var(--black);
+            font-family: 'Bangers', cursive;
+            font-size: 24px;
+            letter-spacing: 2px;
             color: var(--white);
-            font-weight: 800;
-            border: 2px solid var(--black);
-            box-shadow: 3px 3px 0 var(--white);
-            position: relative;
-            margin-top: 8px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
 
-        .status:hover {
-            transform: translateY(-2px);
-            box-shadow: 5px 5px 0 var(--white);
-        }
-
-        /* تصميم صفحة المعلومات الشخصية - معدلة لتناسب المساحة */
-        .personal-content {
+        .github-link {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--black);
+            color: var(--white);
+            border: 2px solid var(--white);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .github-link:hover {
+            background-color: var(--white);
+            color: var(--black);
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .github-link i {
+            font-size: 20px;
+        }
+
+        /* Gallery Tab - Modern Grid */
+        .gallery-content {
+            text-align: center;
             height: 100%;
-            gap: 15px;
-        }
-
-        .info-section {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 5px; /* مساحة لشريط التمرير */
         }
 
-        /* شريط التمرير المخصص لقسم Personal */
-        .info-section::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        .info-section::-webkit-scrollbar-track {
-            background: var(--gray-light);
-            border: 2px solid var(--black);
-            box-shadow: inset 2px 2px 0 var(--black);
-        }
-
-        .info-section::-webkit-scrollbar-thumb {
-            background: var(--black);
-            border: 2px solid var(--black);
-            box-shadow: 2px 2px 0 var(--gray-medium);
-        }
-
-        .info-section::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-dark);
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .info-item {
-            background: var(--white);
-            padding: 12px;
-            border: 2px solid var(--black);
-            position: relative;
-            box-shadow: 3px 3px 0 var(--black);
-            transition: all 0.3s ease;
-        }
-
-        .info-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 5px 5px 0 var(--black);
-        }
-
-        .info-item:nth-child(odd) {
-            transform: rotate(-1deg);
-        }
-
-        .info-item:nth-child(even) {
-            transform: rotate(1deg);
-        }
-
-        .info-item:nth-child(odd):hover, .info-item:nth-child(even):hover {
-            transform: rotate(0deg) translateY(-3px);
-        }
-
-        .info-label {
-            font-weight: 800;
-            color: var(--black);
-            margin-bottom: 4px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px dotted var(--black);
-            padding-bottom: 2px;
-        }
-
-        .info-value {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .personal-bio {
-            background: var(--gray-light);
-            padding: 15px;
-            border: 2px solid var(--black);
-            position: relative;
-            box-shadow: 4px 4px 0 var(--black);
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 5px; /* مساحة لشريط التمرير */
-        }
-
-        /* شريط التمرير المخصص للبيو */
-        .personal-bio::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        .personal-bio::-webkit-scrollbar-track {
-            background: var(--gray-light);
-            border: 2px solid var(--black);
-            box-shadow: inset 2px 2px 0 var(--black);
-        }
-
-        .personal-bio::-webkit-scrollbar-thumb {
-            background: var(--black);
-            border: 2px solid var(--black);
-            box-shadow: 2px 2px 0 var(--gray-medium);
-        }
-
-        .personal-bio::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-dark);
-        }
-
-        .personal-bio h3 {
-            margin-bottom: 12px;
-            color: var(--black);
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .section-title {
+            font-family: 'Bangers', cursive;
+            font-size: 28px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
             position: relative;
             display: inline-block;
         }
 
-        .personal-bio h3::after {
+        .section-title::after {
             content: '';
             position: absolute;
-            bottom: -4px;
-            left: 0;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--white);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 120px;
+            gap: 10px;
+            margin-top: 20px;
+            flex: 1;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item:nth-child(2) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-item:nth-child(3) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-item:nth-child(4) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-img {
             width: 100%;
-            height: 2px;
-            background: var(--black);
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+            filter: grayscale(0.8);
         }
 
-        .personal-bio p {
-            margin-bottom: 12px;
-            line-height: 1.5;
-            font-size: 0.9rem;
+        .gallery-item:hover {
+            transform: scale(1.03);
+            border-color: var(--white);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
         }
 
-        /* تصميم مشغل الموسيقى - معدل لتناسب المساحة */
+        .gallery-item:hover .gallery-img {
+            filter: grayscale(0);
+            transform: scale(1.1);
+        }
+
+        /* Music Tab - Comic Style Player */
         .music-content {
-            width: 100%;
+            text-align: center;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            height: 100%;
-            gap: 15px;
         }
 
         .player-container {
-            background: var(--white);
-            border: 3px solid var(--black);
-            padding: 18px;
-            box-shadow: 5px 5px 0 var(--black);
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .player-container:hover {
-            transform: translateY(-3px);
-            box-shadow: 7px 7px 0 var(--black);
-        }
-
-        .player-container::before {
-            content: '♪';
-            position: absolute;
-            top: -12px;
-            right: 15px;
-            background: var(--white);
-            color: var(--black);
-            font-size: 1.3rem;
-            padding: 0 8px;
-            font-weight: 900;
-        }
-
-        .player-header {
+            background-color: var(--black);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--white);
+            margin-top: 10px;
+            flex: 1;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+        }
+
+        .track-list {
+            max-height: 180px;
+            overflow-y: auto;
             margin-bottom: 15px;
-            border-bottom: 2px solid var(--black);
-            padding-bottom: 8px;
+            padding-right: 5px;
+            flex: 1;
         }
 
-        .player-header i {
-            font-size: 1.5rem;
-            color: var(--black);
-            margin-right: 12px;
+        .track-list::-webkit-scrollbar {
+            width: 4px;
         }
 
-        .player-header h2 {
-            font-size: 1.3rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .track-list::-webkit-scrollbar-thumb {
+            background: var(--white);
+        }
+
+        .track-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--gray);
+            cursor: none;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .track-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .track-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left: 3px solid var(--white);
         }
 
         .track-info {
-            text-align: center;
-            margin-bottom: 15px;
-            padding: 8px;
-            background: var(--gray-light);
-            border: 2px dashed var(--black);
+            flex: 1;
+            text-align: left;
         }
 
         .track-title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 4px;
-            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 14px;
+            font-family: 'Comic Neue', cursive;
         }
 
         .track-artist {
-            color: var(--black);
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .progress-container {
-            background: var(--gray-light);
-            height: 8px;
-            border-radius: 0;
-            margin-bottom: 12px;
-            cursor: pointer;
-            position: relative;
-            border: 2px solid var(--black);
-        }
-
-        .progress-bar {
-            background: var(--black);
-            height: 100%;
-            width: 0%;
-            transition: width 0.1s linear;
-            position: relative;
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            right: -4px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
-            background: var(--black);
-            border: 2px solid var(--white);
-        }
-
-        .time-container {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--black);
-            margin-bottom: 15px;
-            font-weight: 600;
+            font-size: 12px;
+            color: var(--gray);
+            font-family: 'Comic Neue', cursive;
         }
 
         .player-controls {
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .control-btn {
-            background: var(--white);
-            border: 2px solid var(--black);
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 18px;
+            cursor: none;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
             width: 40px;
             height: 40px;
-            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--black);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 2px 2px 0 var(--black);
+            border: 2px solid var(--white);
         }
 
         .control-btn:hover {
-            background: var(--gray-light);
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0 var(--black);
-        }
-
-        .play-btn {
-            background: var(--black);
-            color: var(--white);
-            width: 48px;
-            height: 48px;
-            font-size: 1.2rem;
-        }
-
-        .play-btn:hover {
-            background: var(--gray-dark);
-        }
-
-        .playlist-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .playlist {
-            flex: 1;
-            overflow-y: auto;
-            border: 2px solid var(--black);
-            background: var(--white);
-            box-shadow: 3px 3px 0 var(--black);
-            padding-right: 5px; /* مساحة لشريط التمرير */
-        }
-
-        /* شريط التمرير المخصص للبلايليست */
-        .playlist::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        .playlist::-webkit-scrollbar-track {
-            background: var(--gray-light);
-            border: 2px solid var(--black);
-            box-shadow: inset 2px 2px 0 var(--black);
-        }
-
-        .playlist::-webkit-scrollbar-thumb {
-            background: var(--black);
-            border: 2px solid var(--black);
-            box-shadow: 2px 2px 0 var(--gray-medium);
-        }
-
-        .playlist::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-dark);
-        }
-
-        .playlist-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 12px;
-            background: var(--white);
-            border-bottom: 1px solid var(--black);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.85rem;
-        }
-
-        .playlist-item:hover {
-            background: var(--gray-light);
-            transform: translateX(3px);
-        }
-
-        .playlist-item.active {
-            background: var(--black);
-            color: var(--white);
-        }
-
-        .track-details {
-            flex: 1;
-        }
-
-        .track-number {
-            color: inherit;
-            margin-right: 8px;
-            width: 18px;
-            display: inline-block;
-            font-weight: 800;
-        }
-
-        /* تصميم الإشعارات المعدل */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--white);
-            border: 3px solid var(--black);
-            padding: 15px 20px;
-            box-shadow: 8px 8px 0 var(--black);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1000;
-            max-width: 350px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .notification.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .notification-title {
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: var(--black);
-            text-transform: uppercase;
-            font-size: 1.1rem;
-            border-bottom: 2px solid var(--black);
-            padding-bottom: 5px;
-        }
-
-        .notification-message {
-            font-size: 0.9rem;
-            color: var(--black);
-            line-height: 1.4;
-        }
-
-        /* تأثيرات مانجا */
-        .manga-effect {
-            position: absolute;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.05;
-        }
-
-        .speed-lines {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 15px,
-                var(--black) 15px,
-                var(--black) 17px
-            );
-            transform: skewX(-15deg);
-        }
-
-        /* الشريط السفلي */
-        .footer-bar {
-            width: 100%;
-            max-width: 550px;
-            background: var(--white);
-            border: 2px solid var(--black);
-            padding: 8px 15px;
-            box-shadow: 5px 5px 0 var(--black);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .footer-bar:hover {
-            transform: translateY(-2px);
-            box-shadow: 7px 7px 0 var(--black);
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .social-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--black);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--black);
-            transition: all 0.2s ease;
-        }
-
-        .social-icon:hover {
-            background: var(--white);
+            background-color: var(--white);
             color: var(--black);
             transform: scale(1.1);
         }
 
-        /* تصميم متجاوب */
+        .play-btn {
+            background-color: var(--white);
+            color: var(--black);
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 6px;
+            background-color: var(--gray);
+            border-radius: 3px;
+            margin: 0 10px;
+            cursor: none;
+            position: relative;
+            border: 1px solid var(--white);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--white);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .time-display {
+            font-size: 12px;
+            color: var(--gray);
+            min-width: 80px;
+            text-align: center;
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .volume-slider {
+            width: 100px;
+            -webkit-appearance: none;
+            height: 6px;
+            background: var(--gray);
+            border-radius: 3px;
+            border: 1px solid var(--white);
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--white);
+            cursor: none;
+            border: 1px solid var(--black);
+        }
+
+        .now-playing {
+            font-family: 'Bangers', cursive;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-align: center;
+            background-color: var(--black);
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: 2px solid var(--white);
+            display: inline-block;
+            margin: 0 auto 15px;
+        }
+
+        /* Alert System */
+        .alert-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .comic-alert {
+            background-color: var(--white);
+            color: var(--black);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid var(--black);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            font-family: 'Bangers', cursive;
+            font-size: 16px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .comic-alert.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Welcome Modal */
+        .welcome-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .welcome-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            color: var(--black);
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid var(--black);
+            max-width: 500px;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.5s ease;
+        }
+
+        .welcome-modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-family: 'Bangers', cursive;
+            font-size: 32px;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .modal-text {
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 10px 25px;
+            font-family: 'Bangers', cursive;
+            font-size: 16px;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            cursor: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            background-color: var(--white);
+            color: var(--black);
+            transform: translateY(-3px);
+            border: 2px solid var(--black);
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .header-bar {
+            .header {
                 flex-direction: column;
                 gap: 15px;
             }
             
-            .navbar {
-                margin: 0;
-                width: 100%;
-            }
-            
-            .datetime-bar {
-                order: -1;
-            }
-            
-            .info-grid {
+            .gallery-grid {
                 grid-template-columns: 1fr;
+                grid-auto-rows: 150px;
             }
-            
-            .content {
-                padding: 20px;
-                min-height: 450px;
+
+            .gallery-item:nth-child(1) {
+                grid-column: span 1;
+            }
+
+            .content-container {
                 height: 450px;
             }
             
-            .name {
-                font-size: 1.8rem;
-            }
-            
-            .profile-image-wrapper {
-                width: 130px;
-                height: 130px;
-            }
-            
-            .speech-bubble {
-                width: 140px;
-                font-size: 0.8rem;
-            }
-            
-            .nav-tab {
-                padding: 6px 12px;
-                font-size: 0.75rem;
+            .tab-content {
+                padding: 20px;
             }
         }
 
         @media (max-width: 480px) {
-            .nav-tabs {
-                flex-direction: column;
-                padding: 8px;
+            .main-container {
+                width: 95%;
             }
             
-            .nav-tab {
-                margin: 3px 0;
-                text-align: center;
+            .tab-content {
+                padding: 15px;
+            }
+            
+            .profile-container {
+                width: 130px;
+                height: 130px;
             }
             
             .name {
-                font-size: 1.6rem;
+                font-size: 28px;
             }
             
-            .profile-image-wrapper {
-                width: 110px;
-                height: 110px;
+            .status {
+                font-size: 20px;
             }
             
-            .bubble-left, .bubble-right {
-                display: none;
+            .player-controls {
+                flex-wrap: wrap;
+            }
+
+            .progress-container {
+                order: 3;
+                flex-basis: 100%;
+                margin: 10px 0;
             }
             
-            .footer-bar {
-                flex-direction: column;
-                gap: 8px;
-                text-align: center;
-            }
-            
-            .content {
-                min-height: 430px;
-                height: 430px;
+            .content-container {
+                height: 400px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="manga-effect speed-lines"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
 
-    <div class="container">
-        <div class="header-bar">
-            <div class="datetime-bar">
-                <div class="time" id="current-time">00:00:00</div>
-                <div class="date" id="current-date">Loading...</div>
-            </div>
-            
-            <div class="navbar">
-                <div class="nav-tabs">
-                    <div class="nav-tab active" data-tab="home">HOME</div>
-                    <div class="nav-tab" data-tab="personal">PERSONAL</div>
-                    <div class="nav-tab" data-tab="music">MUSIC</div>
-                </div>
-            </div>
-            
-            <div style="width: 120px;"> <!-- عنصر نائب للمساحة -->
+    <!-- Background Elements -->
+    <div class="comic-bg">
+        <div class="comic-dot"></div>
+        <div class="comic-dot"></div>
+        <div class="comic-dot"></div>
+        <div class="comic-dot"></div>
+        <div class="comic-dot"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header with Date and Navigation -->
+        <div class="header">
+            <div class="datetime" id="datetime">Loading...</div>
+            <div class="nav-tabs">
+                <button class="tab-btn active" data-tab="home">Home</button>
+                <button class="tab-btn" data-tab="gallery">Gallery</button>
+                <button class="tab-btn" data-tab="music">Music</button>
             </div>
         </div>
 
-        <div class="content">
-            <!-- الصفحة الرئيسية -->
-            <div class="tab-content active" id="home">
+        <!-- Main Content -->
+        <div class="content-container">
+            <!-- Home Tab -->
+            <div class="tab-content active" id="home-content">
                 <div class="home-content">
                     <div class="profile-container">
-                        <div class="speech-bubble bubble-left">Hey there!</div>
-                        <div class="profile-image-wrapper">
-                            <img src="https://xatimg.com/image/rWDHtSw2pqG2.jpg" alt="Profile" class="profile-image">
-                        </div>
-                        <div class="speech-bubble bubble-right">Check this out!</div>
+                        <img src="https://xatimg.com/image/rWDHtSw2pqG2.jpg" alt="Pavly" class="profile-img">
                     </div>
-                    <h1 class="name">PAVLY</h1>
-                    <p class="bio">"Life is a game, play it with passion and enjoy every moment. The best way to predict the future is to create it. Stay curious, keep learning, and never stop exploring new horizons."</p>
-                    <div class="status">GOD IS LOVE ❤︎</div>
+                    <h1 class="name">Pavly</h1>
+                    <p class="bio">Pola, 33 age, Texas USA, Content Creator on YouTube. Passionate about creating engaging content and sharing my journey with the world.</p>
+                    <div class="status">God is love</div>
+                    <a href="https://github.com/bolae700" class="github-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
                 </div>
             </div>
 
-            <!-- صفحة المعلومات الشخصية -->
-            <div class="tab-content" id="personal">
-                <div class="personal-content">
-                    <div class="info-section">
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <div class="info-label">NAME</div>
-                                <div class="info-value">POLA EMAD</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">AGE</div>
-                                <div class="info-value">33</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">WORK</div>
-                                <div class="info-value">UBER</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">HOBBY</div>
-                                <div class="info-value">GAMING & YOUTUBE</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">PLACE</div>
-                                <div class="info-value">TEXAS, USA</div>
-                            </div>
+            <!-- Gallery Tab -->
+            <div class="tab-content" id="gallery-content">
+                <div class="gallery-content">
+                    <h2 class="section-title">MY GALLERY</h2>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Comic Art 1" class="gallery-img">
                         </div>
-                    </div>
-                    <div class="personal-bio">
-                        <h3>About Me</h3>
-                        <p>Hey there! I'm Pola, a 33-year-old living my best life in Texas. By day, I'm navigating the streets as an Uber driver, meeting interesting people and hearing their stories. But when I'm off the clock, my world transforms into a digital playground.</p>
-                        <p>Gaming isn't just a hobby for me - it's a passion. Whether I'm exploring vast open worlds, competing in intense multiplayer battles, or getting lost in immersive RPGs, gaming is my escape and creative outlet. I've even started sharing my gaming adventures on YouTube, building a community of fellow gamers who appreciate both skill and entertainment.</p>
-                        <p>When I'm not gaming or driving, you'll probably find me exploring new music, checking out the latest tech, or just enjoying the simple pleasures of life. I believe in living authentically, embracing both the challenges and joys that come my way. Life's too short for boring - let's make every moment count!</p>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Comic Art 2" class="gallery-img">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1580477667995-2b94f01c9516?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Comic Art 3" class="gallery-img">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Comic Art 4" class="gallery-img">
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- صفحة الموسيقى -->
-            <div class="tab-content" id="music">
+            <!-- Music Tab -->
+            <div class="tab-content" id="music-content">
                 <div class="music-content">
+                    <h2 class="section-title">MUSIC PLAYER</h2>
+                    <div class="now-playing" id="now-playing">Select a track to play</div>
                     <div class="player-container">
-                        <div class="player-header">
-                            <i class="fas fa-music"></i>
-                            <h2>Music Player</h2>
-                        </div>
-                        <div class="track-info">
-                            <div class="track-title" id="current-track-title">Select a track</div>
-                            <div class="track-artist" id="current-track-artist">Artist</div>
-                        </div>
-                        <div class="progress-container" id="progress-container">
-                            <div class="progress-bar" id="progress-bar"></div>
-                        </div>
-                        <div class="time-container">
-                            <span class="track-current-time" id="track-current-time">0:00</span>
-                            <span class="track-duration" id="track-duration">0:00</span>
+                        <div class="track-list" id="track-list">
+                            <!-- Track list will be populated by JavaScript -->
                         </div>
                         <div class="player-controls">
-                            <button class="control-btn" id="prev-btn">
-                                <i class="fas fa-step-backward"></i>
-                            </button>
-                            <button class="control-btn play-btn" id="play-btn">
-                                <i class="fas fa-play" id="play-icon"></i>
-                            </button>
-                            <button class="control-btn" id="next-btn">
-                                <i class="fas fa-step-forward"></i>
-                            </button>
+                            <button class="control-btn prev-btn">⏮</button>
+                            <button class="control-btn play-btn">▶</button>
+                            <button class="control-btn next-btn">⏭</button>
+                            <div class="progress-container">
+                                <div class="progress-bar"></div>
+                            </div>
+                            <div class="time-display">0:00 / 0:00</div>
                         </div>
-                    </div>
-                    <div class="playlist-container">
-                        <div class="playlist" id="playlist">
-                            <!-- سيتم ملء قائمة التشغيل ديناميكيًا -->
+                        <div class="volume-control">
+                            <span>🔊</span>
+                            <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="0.7">
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- الشريط السفلي -->
-        <div class="footer-bar">
-            <div class="copyright">© 2025 PAVLY PORTFOLIO</div>
-            <div class="social-icons">
-                <a href="https://github.com/bolae700" class="social-icon" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
             </div>
         </div>
     </div>
 
-    <div class="notification" id="notification">
-        <div class="notification-title" id="notification-title">Notification</div>
-        <div class="notification-message" id="notification-message">This is a notification message</div>
+    <!-- Alert System -->
+    <div class="alert-container" id="alert-container">
+        <!-- Alerts will be added here dynamically -->
+    </div>
+
+    <!-- Welcome Modal -->
+    <div class="welcome-modal active" id="welcome-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">WELCOME TO MY WORLD!</h2>
+            <p class="modal-text">Step into my creative universe where manga aesthetics meet modern design. Explore my portfolio and enjoy the experience!</p>
+            <button class="modal-btn" id="modal-close-btn">ENTER PORTFOLIO</button>
+        </div>
     </div>
 
     <script>
-        // بيانات الموسيقى
+        // Audio Context for Sound Effects
+        let audioContext;
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.log('Web Audio API is not supported in this browser');
+        }
+
+        // Function to create sound effects
+        function playSound(frequency, duration, type = 'sine') {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = type;
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        // Custom Cursor - Smaller and more professional
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Add hover effect to interactive elements
+        const interactiveElements = document.querySelectorAll('button, a, .gallery-item, .track-item, .volume-slider');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                playSound(600, 0.1, 'square');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+
+        // Tab Navigation
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                
+                // Update active tab
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Show corresponding content
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${tabId}-content`) {
+                        content.classList.add('active');
+                    }
+                });
+                
+                // Play sound and show alert
+                playSound(800, 0.2, 'sawtooth');
+                showAlert(`Switched to ${tabId.toUpperCase()} tab!`);
+            });
+        });
+
+        // Date and Time
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('en-US', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // Alert System
+        function showAlert(message) {
+            const alertContainer = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = 'comic-alert';
+            alert.textContent = message;
+            
+            alertContainer.appendChild(alert);
+            
+            // Trigger animation
+            setTimeout(() => {
+                alert.classList.add('show');
+            }, 10);
+            
+            // Play alert sound
+            playSound(1000, 0.3, 'triangle');
+            
+            // Remove alert after 3 seconds
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Welcome Modal
+        const welcomeModal = document.getElementById('welcome-modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
+        modalCloseBtn.addEventListener('click', () => {
+            welcomeModal.classList.remove('active');
+            playSound(500, 0.5, 'sine');
+            showAlert('Welcome to my creative space! Enjoy exploring!');
+        });
+
+        // Music Player
         const tracks = [
             { url: "https://audio.jukehost.co.uk/rbodvVpUNsXhuPM4YF4W3xiGyuPcQiSu", title: "El Saber Tayb", artist: "George Wasuf" },
             { url: "https://audio.jukehost.co.uk/QUEE10oqvf4F50S7mTmF7IfuicfVhV2B", title: "Batali Baa", artist: "Ramy Sabry" },
@@ -1152,347 +1015,153 @@
             { url: "https://audio.jukehost.co.uk/GOzONzgMkJgOFZgbzmCAPU3uXpKKcYAh", title: "Unstoppable", artist: "Sia" },
         ];
 
-        // متغيرات مشغل الموسيقى
+        const trackList = document.getElementById('track-list');
+        const playBtn = document.querySelector('.play-btn');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const progressBar = document.querySelector('.progress-bar');
+        const progressContainer = document.querySelector('.progress-container');
+        const timeDisplay = document.querySelector('.time-display');
+        const volumeSlider = document.querySelector('.volume-slider');
+        const nowPlaying = document.getElementById('now-playing');
+
         let currentTrackIndex = 0;
         let isPlaying = false;
         let audio = new Audio();
-        let audioContext;
-        let gainNode;
 
-        // تهيئة الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            // تحديث الوقت والتاريخ
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
+        // Populate track list
+        tracks.forEach((track, index) => {
+            const trackItem = document.createElement('div');
+            trackItem.className = 'track-item';
+            if (index === 0) trackItem.classList.add('active');
             
-            // تهيئة التنقل بين التبويبات
-            initTabs();
+            trackItem.innerHTML = `
+                <div class="track-info">
+                    <div class="track-title">${track.title}</div>
+                    <div class="track-artist">${track.artist}</div>
+                </div>
+                <div class="track-duration">--:--</div>
+            `;
             
-            // تهيئة مشغل الموسيقى
-            initMusicPlayer();
+            trackItem.addEventListener('click', () => {
+                playTrack(index);
+            });
             
-            // تهيئة تأثيرات الصوت
-            initAudioEffects();
-            
-            // إظهار رسالة ترحيبية
-            setTimeout(() => {
-                showNotification('Welcome!', 'Thanks for visiting my portfolio! Enjoy exploring :)');
-            }, 1000);
+            trackList.appendChild(trackItem);
         });
 
-        // تحديث الوقت والتاريخ
-        function updateDateTime() {
-            const now = new Date();
-            
-            // تنسيق الوقت
-            const timeOptions = { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            const timeString = now.toLocaleTimeString('en-US', timeOptions);
-            document.getElementById('current-time').textContent = timeString;
-            
-            // تنسيق التاريخ
-            const dateOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-            const dateString = now.toLocaleDateString('en-US', dateOptions);
-            document.getElementById('current-date').textContent = dateString;
-        }
-
-        // وظيفة تهيئة التبويبات
-        function initTabs() {
-            const tabs = document.querySelectorAll('.nav-tab');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // إزالة النشاط من جميع التبويبات
-                    tabs.forEach(t => t.classList.remove('active'));
-                    
-                    // إضافة النشاط للتبويب المحدد
-                    this.classList.add('active');
-                    
-                    // إخفاء جميع محتويات التبويبات
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    
-                    // إظهار محتوى التبويب المحدد
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                    
-                    // تشغيل صوت التنقل
-                    playNavSound();
-                    
-                    // إظهار إشعار
-                    showNotification('Navigation', `You're now viewing ${this.textContent}`);
-                });
-                
-                // إضافة تأثير الصوت عند التمرير
-                tab.addEventListener('mouseenter', function() {
-                    playHoverSound();
-                });
-            });
-        }
-
-        // وظيفة تهيئة مشغل الموسيقى
-        function initMusicPlayer() {
-            // ملء قائمة التشغيل
-            const playlistElement = document.getElementById('playlist');
-            
-            tracks.forEach((track, index) => {
-                const playlistItem = document.createElement('div');
-                playlistItem.className = 'playlist-item';
-                playlistItem.setAttribute('data-index', index);
-                
-                playlistItem.innerHTML = `
-                    <div class="track-details">
-                        <span class="track-number">${index + 1}.</span>
-                        <span class="track-title">${track.title}</span>
-                    </div>
-                    <div class="track-artist">${track.artist}</div>
-                `;
-                
-                playlistItem.addEventListener('click', function() {
-                    playTrack(index);
-                });
-                
-                // إضافة تأثير الصوت عند التمرير
-                playlistItem.addEventListener('mouseenter', function() {
-                    playHoverSound();
-                });
-                
-                playlistElement.appendChild(playlistItem);
-            });
-            
-            // إعداد عناصر التحكم
-            const playBtn = document.getElementById('play-btn');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const progressContainer = document.getElementById('progress-container');
-            const progressBar = document.getElementById('progress-bar');
-            const currentTimeElement = document.getElementById('track-current-time');
-            const durationElement = document.getElementById('track-duration');
-            const trackTitle = document.getElementById('current-track-title');
-            const trackArtist = document.getElementById('current-track-artist');
-            
-            // حدث زر التشغيل/الإيقاف
-            playBtn.addEventListener('click', togglePlay);
-            
-            // إضافة تأثير الصوت عند التمرير على الأزرار
-            [playBtn, prevBtn, nextBtn].forEach(btn => {
-                btn.addEventListener('mouseenter', function() {
-                    playHoverSound();
-                });
-            });
-            
-            // حدث الزر السابق - تم إصلاحه
-            prevBtn.addEventListener('click', function() {
-                // إيقاف الصوت الحالي أولاً
-                if (isPlaying) {
-                    audio.pause();
-                }
-                playPrevTrack();
-                playNavSound();
-            });
-            
-            // حدث الزر التالي - تم إصلاحه
-            nextBtn.addEventListener('click', function() {
-                // إيقاف الصوت الحالي أولاً
-                if (isPlaying) {
-                    audio.pause();
-                }
-                playNextTrack();
-                playNavSound();
-            });
-            
-            // حدث شريط التقدم
-            progressContainer.addEventListener('click', setProgress);
-            
-            // أحداث الصوت
-            audio.addEventListener('loadedmetadata', function() {
-                durationElement.textContent = formatTime(audio.duration);
-            });
-            
-            audio.addEventListener('timeupdate', updateProgress);
-            
-            audio.addEventListener('ended', function() {
-                playNextTrack();
-            });
-            
-            // تحسينات إضافية للتحكم في الصوت
-            audio.addEventListener('canplaythrough', function() {
-                // تحديث واجهة المستخدم عند تحميل المقطع الصوتي
-                trackTitle.textContent = tracks[currentTrackIndex].title;
-                trackArtist.textContent = tracks[currentTrackIndex].artist;
-            });
-        }
-
-        // وظيفة تشغيل/إيقاف الموسيقى
-        function togglePlay() {
-            if (isPlaying) {
-                pauseTrack();
-            } else {
-                playTrack(currentTrackIndex);
-            }
-        }
-
-        // وظيفة تشغيل مقطوعة
+        // Play a specific track
         function playTrack(index) {
-            // تحديث الفهرس الحالي
-            currentTrackIndex = index;
+            if (index < 0 || index >= tracks.length) return;
             
-            // إيقاف الصوت الحالي إذا كان يعمل
-            if (isPlaying) {
-                audio.pause();
-            }
-            
-            // تعيين مصدر الصوت الجديد
-            audio.src = tracks[index].url;
-            
-            // تحديث واجهة المستخدم
-            document.querySelectorAll('.playlist-item').forEach(item => {
+            // Update active track
+            document.querySelectorAll('.track-item').forEach(item => {
                 item.classList.remove('active');
             });
+            document.querySelectorAll('.track-item')[index].classList.add('active');
             
-            document.querySelector(`.playlist-item[data-index="${index}"]`).classList.add('active');
+            // Load and play track
+            currentTrackIndex = index;
+            audio.src = tracks[index].url;
+            audio.load();
+            audio.play();
+            isPlaying = true;
+            playBtn.textContent = '⏸';
             
-            document.querySelector('.track-title').textContent = tracks[index].title;
-            document.querySelector('.track-artist').textContent = tracks[index].artist;
+            // Update now playing
+            nowPlaying.textContent = `Now Playing: ${tracks[index].title} - ${tracks[index].artist}`;
             
-            // تشغيل الصوت
-            audio.play().then(() => {
-                isPlaying = true;
-                
-                // تحديث زر التشغيل
-                document.getElementById('play-icon').className = 'fas fa-pause';
-                
-                // إظهار إشعار
-                showNotification('Now Playing', `${tracks[index].title} by ${tracks[index].artist}`);
-            }).catch(error => {
-                console.error("Error playing audio:", error);
-                showNotification('Playback Error', 'Could not play the selected track');
-            });
+            // Show alert
+            showAlert(`Now playing: ${tracks[index].title}`);
+            
+            // Play sound effect
+            playSound(700, 0.2, 'sine');
         }
 
-        // وظيفة إيقاف الموسيقى
-        function pauseTrack() {
-            audio.pause();
-            isPlaying = false;
-            document.getElementById('play-icon').className = 'fas fa-play';
-        }
+        // Toggle play/pause
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.textContent = '▶';
+            } else {
+                audio.play();
+                playBtn.textContent = '⏸';
+            }
+            isPlaying = !isPlaying;
+            playSound(600, 0.1, 'square');
+        });
 
-        // وظيفة تشغيل المقطوعة التالية - تم إصلاحها
-        function playNextTrack() {
-            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-            playTrack(currentTrackIndex);
-        }
+        // Previous track
+        prevBtn.addEventListener('click', () => {
+            let newIndex = currentTrackIndex - 1;
+            if (newIndex < 0) newIndex = tracks.length - 1;
+            playTrack(newIndex);
+        });
 
-        // وظيفة تشغيل المقطوعة السابقة - تم إصلاحها
-        function playPrevTrack() {
-            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-            playTrack(currentTrackIndex);
-        }
+        // Next track
+        nextBtn.addEventListener('click', () => {
+            let newIndex = currentTrackIndex + 1;
+            if (newIndex >= tracks.length) newIndex = 0;
+            playTrack(newIndex);
+        });
 
-        // وظيفة تحديث شريط التقدم
-        function updateProgress() {
+        // Update progress bar
+        audio.addEventListener('timeupdate', () => {
             if (audio.duration) {
                 const progressPercent = (audio.currentTime / audio.duration) * 100;
-                document.getElementById('progress-bar').style.width = `${progressPercent}%`;
-                document.getElementById('track-current-time').textContent = formatTime(audio.currentTime);
+                progressBar.style.width = `${progressPercent}%`;
+                
+                // Update time display
+                const currentTime = formatTime(audio.currentTime);
+                const duration = formatTime(audio.duration);
+                timeDisplay.textContent = `${currentTime} / ${duration}`;
             }
-        }
+        });
 
-        // وظيفة تعيين التقدم
-        function setProgress(e) {
-            if (!audio.duration) return;
-            
-            const width = this.clientWidth;
+        // Seek functionality
+        progressContainer.addEventListener('click', (e) => {
+            const width = progressContainer.clientWidth;
             const clickX = e.offsetX;
             const duration = audio.duration;
             
             audio.currentTime = (clickX / width) * duration;
-        }
+        });
 
-        // وظيفة تهيئة تأثيرات الصوت
-        function initAudioEffects() {
-            // إنشاء سياق الصوت
-            try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                gainNode = audioContext.createGain();
-                gainNode.connect(audioContext.destination);
-            } catch (e) {
-                console.log("Web Audio API is not supported in this browser");
-            }
-        }
+        // Volume control
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value;
+        });
 
-        // وظيفة تشغيل صوت التنقل
-        function playNavSound() {
-            if (!audioContext) return;
-            
-            try {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.type = 'square';
-                oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.1);
-                
-                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.2);
-            } catch (e) {
-                console.log("Error playing navigation sound");
-            }
-        }
-
-        // وظيفة تشغيل صوت التمرير
-        function playHoverSound() {
-            if (!audioContext) return;
-            
-            try {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.05);
-                
-                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.1);
-            } catch (e) {
-                console.log("Error playing hover sound");
-            }
-        }
-
-        // وظيفة تنسيق الوقت
+        // Format time (seconds to MM:SS)
         function formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            
             const min = Math.floor(seconds / 60);
             const sec = Math.floor(seconds % 60);
             return `${min}:${sec < 10 ? '0' : ''}${sec}`;
         }
 
-        // وظيفة عرض الإشعارات
-        function showNotification(title, message) {
-            const notification = document.getElementById('notification');
-            const notificationTitle = document.getElementById('notification-title');
-            const notificationMessage = document.getElementById('notification-message');
-            
-            notificationTitle.textContent = title;
-            notificationMessage.textContent = message;
-            
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 4000);
-        }
+        // Auto-play first track when music tab is opened
+        document.querySelector('.tab-btn[data-tab="music"]').addEventListener('click', () => {
+            if (!audio.src) {
+                playTrack(0);
+            }
+        });
+
+        // Initialize with first track loaded (but not playing)
+        audio.volume = volumeSlider.value;
+
+        // Add click sound to all buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                playSound(400, 0.1, 'square');
+            });
+        });
+
+        // Show welcome message after modal closes
+        setTimeout(() => {
+            if (welcomeModal.classList.contains('active')) {
+                showAlert('Welcome to my creative space! Enjoy exploring!');
+            }
+        }, 500);
     </script>
 </body>
 </html>
