@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pola's Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --surface-color-rgb: 18, 18, 18; /* For rgba */
+            --primary-text: #e9e9e9;
+            --secondary-text: #8a8a8a;
+            --accent-color: #ffffff;
+            --glow-color: rgba(255, 255, 255, 0.1);
+            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+        
+        *:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        #starfield-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .preloader.fade-out { opacity: 0; visibility: hidden; }
+        .preloader-logo { width: 150px; height: auto; }
+        .preloader-logo path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 2.5s ease-in-out forwards;
+        }
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+
+        .container {
+            width: 100%; max-width: 460px; display: flex; flex-direction: column;
+            align-items: center; opacity: 0;
+            animation: containerFadeIn 1s ease 0.5s forwards;
+        }
+        @keyframes containerFadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .header { 
+            text-align: center; margin-bottom: 2rem; 
+            perspective: 1000px; /* For 3D effect */
+            transition: var(--transition-medium);
+        }
+        .header-inner {
+            transition: var(--transition-medium);
+        }
+        .logo {
+            font-size: 2.2rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 9px;
+            transition: var(--transition-medium);
+            background: linear-gradient(180deg, #ffffff 70%, #b0b0b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .tagline { font-size: 0.9rem; color: var(--secondary-text); font-weight: 300; letter-spacing: 1.5px; }
+
+        .content-window, .navbar {
+            background: rgba(var(--surface-color-rgb), 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+        
+        .content-window {
+            max-width: 460px; min-height: 520px;
+            padding: 28px;
+            display: flex; flex-direction: column; align-items: center;
+            transition: var(--transition-medium);
+            border-radius: 16px 16px 0 0;
+            position: relative;
+        }
+        
+        .content { display: none; width: 100%; height: 100%; flex-grow: 1; }
+        .content.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .content.active > * {
+            animation: contentFadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+        @keyframes contentFadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .content.active > *:nth-child(1) { animation-delay: 0.1s; }
+        .content.active > *:nth-child(2) { animation-delay: 0.2s; }
+        .content.active > *:nth-child(3) { animation-delay: 0.3s; }
+        .content.active > *:nth-child(4) { animation-delay: 0.4s; }
+        .content.active > *:nth-child(5) { animation-delay: 0.5s; }
+
+        /* Home Content */
+        .profile-pic {
+            width: 130px; height: 130px; border-radius: 50%; border: 2px solid var(--accent-color);
+            margin-bottom: 1.5rem; object-fit: cover; transition: var(--transition-medium); filter: grayscale(100%);
+        }
+        .profile-pic:hover { transform: scale(1.05); filter: grayscale(0%); box-shadow: 0 0 25px rgba(255, 255, 255, 0.1); }
+        .name { font-size: 2rem; margin-bottom: 1rem; font-weight: 700; }
+        .name .cursor { display: inline-block; background-color: var(--accent-color); margin-left: 2px; width: 4px; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .verse { font-style: italic; margin-bottom: 1.5rem; color: var(--secondary-text); border-left: 2px solid rgba(255,255,255,0.2); padding: 4px 0 4px 15px; text-align: left; font-size: 0.9rem; font-weight: 300; line-height: 1.6; }
+        .god-love { font-size: 1rem; margin-bottom: 1.5rem; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; }
+        .social-icons { display: flex; gap: 1rem; }
+        .social-icon { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 50%; transition: var(--transition-fast); cursor: pointer; text-decoration: none; border: 1px solid transparent; }
+        .social-icon i { font-size: 1.2rem; color: var(--secondary-text); transition: var(--transition-fast); }
+        .social-icon:hover { background: var(--accent-color); transform: translateY(-3px) scale(1.05); box-shadow: 0 4px 15px var(--glow-color); }
+        .social-icon:hover i { color: var(--bg-color); }
+
+        /* Music Player */
+        .player-wrapper { width:100%; display: flex; flex-direction: column; align-items: center; }
+        .player-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 1.5rem; align-self: flex-start; }
+        .visualizer-canvas { height: 40px; width: 100%; margin-bottom: 1.5rem; display: block; }
+        .track-info { margin-bottom: 1rem; text-align: center; }
+        .track-title { font-size: 1.1rem; font-weight: 500; color: var(--primary-text); }
+        .track-artist { font-size: 0.9rem; color: var(--secondary-text); }
+        .progress-container { width: 100%; height: 5px; background: rgba(0,0,0,0.3); border-radius: 2.5px; cursor: pointer; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--accent-color); border-radius: 2.5px; width: 0%; transition: width 0.1s linear; }
+        .time-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--secondary-text); margin-top: 0.6rem; }
+        .player-controls { display: flex; justify-content: center; align-items: center; gap: 1rem; margin: 1.5rem 0; }
+        .control-btn { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--secondary-text); width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
+        .control-btn:hover { color: var(--primary-text); border-color: var(--secondary-text); transform: scale(1.05); }
+        .control-btn:active { transform: scale(0.95); }
+        .control-btn.main { width: 60px; height: 60px; font-size: 1.2rem; border-width: 2px; border-color: rgba(255,255,255,0.5);}
+        .control-btn.main i { color: var(--accent-color); }
+        .playlist { width: 100%; text-align: left; max-height: 100px; overflow-y: auto; position: relative; }
+        .playlist::-webkit-scrollbar { width: 4px; }
+        .playlist::-webkit-scrollbar-track { background: transparent; }
+        .playlist::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+        .playlist-item { padding: 10px 14px; border-radius: 8px; cursor: pointer; transition: var(--transition-medium); display: flex; align-items: center; gap: 12px; font-size: 0.9rem; color: var(--secondary-text); position: relative; overflow: hidden; }
+        .playlist-item::before { content: ''; position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%); border-radius: 50%; transform: translate(-50%, -50%) scale(0); transition: transform 0.4s ease; }
+        .playlist-item:hover::before { transform: translate(-50%, -50%) scale(30); }
+        .playlist-item:hover { color: var(--primary-text); }
+        .playlist-item.active { background: rgba(255,255,255,0.1); color: var(--accent-color); font-weight: 500; }
+        .playlist-item i, .playlist-item span { position: relative; z-index: 1; }
+        
+        /* Gallery */
+        .gallery-wrapper { width:100%; display: flex; flex-direction: column; align-items: center; }
+        .gallery-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 1.5rem; }
+        .gallery-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; height: 380px; }
+        .gallery-item { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; cursor: pointer; position: relative; overflow: hidden; filter: grayscale(100%); border: 1px solid rgba(255,255,255,0.2); opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease, filter 0.4s ease, border-color 0.4s ease; }
+        .gallery-item.visible { opacity: 1; transform: translateY(0); }
+        .gallery-item:hover { transform: scale(1.03); filter: grayscale(0%); border-color: var(--accent-color); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        
+        /* Clock */
+        .time { font-size: 3.8rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 1px; }
+        .date { font-size: 1.1rem; color: var(--secondary-text); margin-bottom: 2rem; font-weight: 300; }
+        .clock-footer { display: flex; gap: 2rem; }
+        .clock-item { text-align: center; }
+        .clock-value { font-size: 1.3rem; font-weight: 500; }
+        .clock-label { font-size: 0.7rem; color: var(--secondary-text); margin-top: 5px; text-transform: uppercase; letter-spacing: 1.5px;}
+        
+        /* Navigation Bar */
+        .navbar { height: 75px; display: flex; justify-content: space-around; align-items: center; padding: 0 10px; z-index: 100; border-radius: 0 0 16px 16px; border-top: none; }
+        .nav-icon { width: 60px; height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition-fast); position: relative; border-radius: 12px; }
+        .nav-icon i { font-size: 1.5rem; color: var(--secondary-text); transition: var(--transition-fast); margin-bottom: 5px; }
+        .nav-icon span { font-size: 0.7rem; color: var(--secondary-text); transition: var(--transition-fast); font-weight: 500; }
+        .nav-icon:hover { background: rgba(255,255,255,0.05); }
+        .nav-icon:hover i, .nav-icon:hover span { color: var(--primary-text); }
+        .nav-icon.active { background: var(--glow-color); }
+        .nav-icon.active i, .nav-icon.active span { color: var(--accent-color); }
+
+        /* Gallery Lightbox Modal */
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .lightbox.show { opacity: 1; visibility: visible; }
+        .lightbox img { max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: zoomInModal 0.4s var(--transition-medium); }
+        @keyframes zoomInModal { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .lightbox-close { position: absolute; top: 30px; right: 30px; font-size: 2.5rem; color: var(--secondary-text); cursor: pointer; transition: var(--transition-fast); }
+        .lightbox-close:hover { transform: scale(1.1) rotate(90deg); color: var(--accent-color); }
+        
+        /* Tooltips */
+        [data-tooltip] { position: relative; }
+        [data-tooltip]::after {
+            content: attr(data-tooltip); position: absolute; bottom: 120%; left: 50%;
+            transform: translateX(-50%); background-color: #1a1a1a;
+            color: var(--primary-text); padding: 6px 10px; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 500; white-space: nowrap;
+            opacity: 0; visibility: hidden; transition: var(--transition-fast); z-index: 100;
+        }
+        [data-tooltip]:hover::after { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-5px); }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            body { padding: 15px 10px; }
+            .container { width: 100%; max-width: 100%; }
+            .content-window { min-height: 0; height: calc(100vh - 200px); padding: 20px; }
+            .navbar { height: 70px; }
+            .nav-icon { width: 50px; height: 50px; }
+            .time { font-size: 2.8rem; }
+            .date { font-size: 0.9rem; }
+            .gallery-container { height: auto; grid-template-rows: repeat(2, 140px); }
+            .profile-pic { width: 110px; height: 110px; }
+            .name { font-size: 1.8rem; }
+            .verse { font-size: 0.85rem; }
+        }
+        
+        .loader-wrapper { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; display: none; }
+        .content-window.loading .loader-wrapper { display: block; }
+        .loader { width: 40px; height: 40px; position: relative; }
+        .loader::before, .loader::after { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background-color: var(--accent-color); opacity: 0.6; animation: pulse 2s infinite ease-in-out; }
+        .loader::after { animation-delay: -1.0s; }
+        @keyframes pulse { 0%, 100% { transform: scale(0.0); } 50% { transform: scale(1.0); } }
+    </style>
+</head>
+<body>
+    <div class="preloader">
+        <svg class="preloader-logo" viewBox="0 0 458 123" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M61.3963 122.5V0.5H0.896289V122.5H61.3963Z" stroke="white" stroke-width="1"/>
+            <path d="M149.396 0.5V122.5H127.396L89.8963 76.5V122.5H29.3963V0.5H51.3963L88.8963 46V0.5H149.396Z" stroke="white" stroke-width="1"/>
+            <path d="M242.396 122.5V0.5H181.896V122.5H242.396Z" stroke="white" stroke-width="1"/>
+            <path d="M309.896 122.5V23L336.896 0.5H400.396L427.396 23V122.5H366.896V23H309.896Z" stroke="white" stroke-width="1"/>
+        </svg>
+    </div>
+
+    <canvas id="starfield-canvas"></canvas>
+
+    <div class="container">
+        <header class="header">
+            <div class="header-inner">
+                <div class="logo">POLA</div>
+                <div class="tagline">Anime & Manga Portfolio</div>
+            </div>
+        </header>
+
+        <main class="content-window">
+            <div class="loader-wrapper"><div class="loader"></div></div>
+            
+            <div id="home-content" class="content">
+                <img src="https://xatimg.com/image/rWDHtSw2pqG2.jpg" alt="Profile Picture" class="profile-pic">
+                <h1 class="name" data-text="Pola"></h1>
+                <p class="verse">"But those who hope in the LORD will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint."</p>
+                <p class="god-love">GOD IS LOVE</p>
+                <div class="social-icons">
+                    <a href="https://github.com/bolae700" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub Profile" data-tooltip="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@SoundSurge3" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="YouTube Channel" data-tooltip="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div id="music-content" class="content">
+                <div class="player-wrapper">
+                    <h2 class="player-title">Music Player</h2>
+                    <canvas class="visualizer-canvas"></canvas>
+                    <div class="track-info">
+                        <div class="track-title">Select a track</div>
+                        <div class="track-artist">Artist</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div class="time-info">
+                        <span class="current-time">0:00</span>
+                        <span class="duration">0:00</span>
+                    </div>
+                    <div class="player-controls">
+                        <button class="control-btn prev-btn" aria-label="Previous Track" data-tooltip="Previous"><i class="fas fa-step-backward"></i></button>
+                        <button class="control-btn play-pause-btn main" aria-label="Play" data-tooltip="Play"><i class="fas fa-play"></i></button>
+                        <button class="control-btn next-btn" aria-label="Next Track" data-tooltip="Next"><i class="fas fa-step-forward"></i></button>
+                    </div>
+                    <div class="playlist"></div>
+                </div>
+            </div>
+
+            <div id="gallery-content" class="content">
+                 <div class="gallery-wrapper">
+                    <h2 class="gallery-title">Gallery</h2>
+                    <div class="gallery-container">
+                        <img loading="lazy" src="https://i.ibb.co/pXfwCcv/2d79b46de2deb3744fd330d815b76751.jpg" alt="Gallery Image 1" class="gallery-item">
+                        <img loading="lazy" src="https://i.ibb.co/Jyq80hX/bfa64e7da2612eb344663aa3fbcf2f59.png" alt="Gallery Image 2" class="gallery-item">
+                        <img loading="lazy" src="https://i.ibb.co/dDVSRPD/ss.png" alt="Gallery Image 3" class="gallery-item">
+                        <img loading="lazy" src="https://i.ibb.co/dPFpGv9/Default-Cute-anime-boy-pray-3d-art-cartoon-blue-1-30826f36-54b1-49e4-b141-5caad93c4a2c-0.jpg" alt="Gallery Image 4" class="gallery-item">
+                    </div>
+                </div>
+            </div>
+
+            <div id="clock-content" class="content">
+                <div class="time">00:00:00</div>
+                <div class="date">Monday, January 1, 2024</div>
+                <div class="clock-footer">
+                    <div class="clock-item">
+                        <div class="clock-value" id="day-of-year">001</div>
+                        <div class="clock-label">Day of Year</div>
+                    </div>
+                    <div class="clock-item">
+                        <div class="clock-value" id="week-number">01</div>
+                        <div class="clock-label">Week</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav class="navbar">
+            <div class="nav-icon" data-target="home-content">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-icon" data-target="music-content">
+                <i class="fas fa-music"></i>
+                <span>Music</span>
+            </div>
+            <div class="nav-icon" data-target="gallery-content">
+                <i class="fas fa-images"></i>
+                <span>Gallery</span>
+            </div>
+            <div class="nav-icon" data-target="clock-content">
+                <i class="fas fa-clock"></i>
+                <span>Clock</span>
+            </div>
+        </nav>
+    </div>
+    
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" aria-label="Close lightbox">&times;</span>
+        <img src="" alt="Enlarged gallery image" id="lightbox-img">
+    </div>
+
+    <audio id="audio-player" crossorigin="anonymous"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dom = {
+                preloader: document.querySelector('.preloader'),
+                header: document.querySelector('.header'),
+                headerInner: document.querySelector('.header-inner'),
+                navIcons: document.querySelectorAll('.nav-icon'),
+                contentPanes: document.querySelectorAll('.content'),
+                contentWindow: document.querySelector('.content-window'),
+                audio: document.getElementById('audio-player'),
+                playPauseBtn: document.querySelector('.play-pause-btn'),
+                playIcon: document.querySelector('.play-pause-btn i'),
+                prevBtn: document.querySelector('.prev-btn'),
+                nextBtn: document.querySelector('.next-btn'),
+                progressBar: document.querySelector('.progress-bar'),
+                progressContainer: document.querySelector('.progress-container'),
+                currentTimeEl: document.querySelector('.current-time'),
+                durationEl: document.querySelector('.duration'),
+                trackTitleEl: document.querySelector('.track-title'),
+                trackArtistEl: document.querySelector('.track-artist'),
+                playlistEl: document.querySelector('.playlist'),
+                visualizerCanvas: document.querySelector('.visualizer-canvas'),
+                galleryItems: document.querySelectorAll('.gallery-item'),
+                lightbox: document.getElementById('lightbox'),
+                lightboxImg: document.getElementById('lightbox-img'),
+                lightboxClose: document.querySelector('.lightbox-close'),
+                timeEl: document.querySelector('.time'),
+                dateEl: document.querySelector('.date'),
+                dayOfYearEl: document.getElementById('day-of-year'),
+                weekNumberEl: document.getElementById('week-number'),
+                nameEl: document.querySelector('.name'),
+                starfieldCanvas: document.getElementById('starfield-canvas')
+            };
+
+            let audioContext;
+            const getAudioContext = () => {
+                if (!audioContext) {
+                    try {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    } catch (e) { console.error("Web Audio API not supported."); }
+                }
+                return audioContext;
+            };
+
+            const playSound = (frequency = 440, duration = 0.08, type = 'sine') => {
+                const context = getAudioContext();
+                if (!context) return;
+                if (context.state === 'suspended') context.resume();
+                
+                const o = context.createOscillator();
+                const g = context.createGain();
+                o.connect(g);
+                g.connect(context.destination);
+                o.type = type;
+                o.frequency.setValueAtTime(frequency, context.currentTime);
+                g.gain.setValueAtTime(0.15, context.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + duration);
+                o.start();
+                o.stop(context.currentTime + duration);
+            };
+            
+            const Preloader = {
+                init() {
+                    window.addEventListener('load', () => {
+                        setTimeout(() => dom.preloader.classList.add('fade-out'), 500);
+                    });
+                }
+            };
+
+            const Header3D = {
+                init() {
+                    dom.header.addEventListener('mousemove', e => this.onMouseMove(e));
+                    dom.header.addEventListener('mouseleave', () => this.onMouseLeave());
+                },
+                onMouseMove(e) {
+                    const { left, top, width, height } = dom.header.getBoundingClientRect();
+                    const x = e.clientX - left;
+                    const y = e.clientY - top;
+                    const rotateX = (y - height / 2) / -20;
+                    const rotateY = (x - width / 2) / 20;
+                    dom.headerInner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                },
+                onMouseLeave() {
+                    dom.headerInner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                }
+            };
+            
+            const Starfield = {
+                animationFrameId: null,
+                init() {
+                    this.canvas = dom.starfieldCanvas;
+                    this.ctx = this.canvas.getContext('2d');
+                    this.stars = [];
+                    this.resize();
+                    this.animate();
+                    window.addEventListener('resize', () => this.resize());
+                    document.addEventListener('visibilitychange', () => this.handleVisibility());
+                },
+                resize() {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                    this.stars = [];
+                    this.createStars();
+                },
+                createStars() {
+                    const starCount = Math.floor((this.canvas.width * this.canvas.height) / 5000);
+                    for (let i = 0; i < starCount; i++) {
+                        this.stars.push({
+                            x: Math.random() * this.canvas.width,
+                            y: Math.random() * this.canvas.height,
+                            size: Math.random() * 1.5 + 0.5,
+                            speed: Math.random() * 0.2 + 0.1
+                        });
+                    }
+                },
+                animate() {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.stars.forEach(star => {
+                        star.y += star.speed;
+                        if (star.y > this.canvas.height) {
+                            star.y = 0;
+                            star.x = Math.random() * this.canvas.width;
+                        }
+                        this.ctx.beginPath();
+                        this.ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                        this.ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(star.size / 1.5, 0.7)})`;
+                        this.ctx.fill();
+                    });
+                    this.animationFrameId = requestAnimationFrame(() => this.animate());
+                },
+                handleVisibility() {
+                    if (document.hidden) {
+                        cancelAnimationFrame(this.animationFrameId);
+                        this.animationFrameId = null;
+                    } else if (!this.animationFrameId) {
+                        this.animate();
+                    }
+                }
+            };
+
+            const Typewriter = {
+                hasRun: false,
+                init() {
+                    if (this.hasRun) return;
+                    this.element = dom.nameEl;
+                    this.text = this.element.dataset.text;
+                    this.type();
+                    this.hasRun = true;
+                },
+                type() {
+                    let i = 0;
+                    this.element.innerHTML = '';
+                    const cursor = document.createElement('span');
+                    cursor.className = 'cursor';
+                    this.element.appendChild(cursor);
+
+                    const typing = () => {
+                        if (i < this.text.length) {
+                            this.element.insertBefore(document.createTextNode(this.text.charAt(i)), cursor);
+                            i++;
+                            setTimeout(typing, 120);
+                        } else {
+                            setTimeout(() => cursor.style.animation = 'blink 1s infinite', 500);
+                        }
+                    };
+                    typing();
+                }
+            };
+
+            const Navigation = {
+                init() {
+                    dom.navIcons.forEach(icon => icon.addEventListener('click', () => this.activate(icon)));
+                    const savedTab = localStorage.getItem('activeTab') || 'home-content';
+                    const initialIcon = document.querySelector(`.nav-icon[data-target="${savedTab}"]`);
+                    this.activate(initialIcon, true);
+                },
+                activate(selectedIcon, isInitialLoad = false) {
+                    if (!selectedIcon || (selectedIcon.classList.contains('active') && !isInitialLoad)) return;
+                    if (!isInitialLoad) playSound(783.99, 0.06, 'triangle');
+                    
+                    dom.navIcons.forEach(i => i.classList.remove('active'));
+                    selectedIcon.classList.add('active');
+                    
+                    const targetId = selectedIcon.dataset.target;
+                    dom.contentPanes.forEach(pane => pane.classList.remove('active'));
+                    document.getElementById(targetId).classList.add('active');
+
+                    if (targetId === 'home-content') Typewriter.init();
+                    localStorage.setItem('activeTab', targetId);
+                }
+            };
+
+            const MusicPlayer = {
+                tracks: [
+            { url: "https://audio.jukehost.co.uk/QyPglgdEHAkfqpR1NH5rMHiewfPCSg4o", title: "Ahlef be allah", artist: "Haitham Shaker" },
+            { url: "https://audio.jukehost.co.uk/GkbwKXyHWfNGWHtJWsdemKmpOFJFkdCK", title: "Alors on dance", artist: "Stromae" },
+            { url: "https://audio.jukehost.co.uk/MHf54iEPyQIkSmY55VYlqHGSH7CVQqdA", title: "Casablanca", artist: "Emre Kabak" },
+            { url: "https://audio.jukehost.co.uk/GOzONzgMkJgOFZgbzmCAPU3uXpKKcYAh", title: "Unstoppable", artist: "Sia" },
+            { url: "https://audio.jukehost.co.uk/c77yqDnvZV6lAmIPQPanmSgqVpnlnDyv", title: "Saber W Radi", artist: "George Wassouf" },
+            { url: "https://audio.jukehost.co.uk/6tOF41jBlb83ocuYrxtuW7sAmEgyRyFZ", title: "Shoukran", artist: "George Wassouf" },
+            { url: "https://audio.jukehost.co.uk/bbabQwnKnYhXlaRD8alUDCzGEhyu9Rwm", title: "Khadny 7aneen", artist: "George Wassouf" },
+            { url: "https://audio.jukehost.co.uk/lrUXO0jmrJRZANKo0Gx9XEQ0PFuQxKN5", title: "Yalli Bitghib Aleiya", artist: "Haitham Shaker" },
+            { url: "https://audio.jukehost.co.uk/6IQhCPy39Jv5Uxj9WI4fFMeUuJMWWR2D", title: "Khalik Ganbi", artist: "Haitham Shaker" },
+                ],
+                currentTrackIndex: 0, isPlaying: false, analyser: null, audioSource: null, animationFrameId: null,
+
+                init() {
+                    this.populatePlaylist();
+                    this.addEventListeners();
+                    this.updateUI();
+                },
+                setupAudioAnalysis() {
+                    const context = getAudioContext();
+                    if (!context || this.audioSource) return;
+                    this.audioSource = context.createMediaElementSource(dom.audio);
+                    this.analyser = context.createAnalyser();
+                    this.audioSource.connect(this.analyser);
+                    this.analyser.connect(context.destination);
+                    this.analyser.fftSize = 128;
+                },
+                populatePlaylist() {
+                    dom.playlistEl.innerHTML = '';
+                    this.tracks.forEach((track, index) => {
+                        const item = document.createElement('div');
+                        item.className = 'playlist-item';
+                        item.dataset.index = index;
+                        item.innerHTML = `<i class="fas fa-music"></i> <span>${track.title}</span>`;
+                        item.addEventListener('click', () => this.playTrack(index));
+                        dom.playlistEl.appendChild(item);
+                    });
+                },
+                addEventListeners() {
+                    dom.playPauseBtn.addEventListener('click', () => this.togglePlay());
+                    dom.nextBtn.addEventListener('click', () => this.nextTrack());
+                    dom.prevBtn.addEventListener('click', () => this.prevTrack());
+                    dom.audio.addEventListener('play', () => { this.isPlaying = true; this.updateUI(); });
+                    dom.audio.addEventListener('pause', () => { this.isPlaying = false; this.updateUI(); });
+                    dom.audio.addEventListener('ended', () => this.nextTrack());
+                    dom.audio.addEventListener('canplay', () => dom.contentWindow.classList.remove('loading'));
+                    dom.audio.addEventListener('timeupdate', () => this.updateProgress());
+                    dom.progressContainer.addEventListener('click', (e) => this.setProgress(e));
+                },
+                updateUI() {
+                    const track = this.tracks[this.currentTrackIndex];
+                    dom.trackTitleEl.textContent = track ? track.title : 'Select a track';
+                    dom.trackArtistEl.textContent = track ? track.artist : 'Artist';
+                    
+                    document.querySelectorAll('.playlist-item').forEach((item, index) => {
+                        item.classList.toggle('active', index === this.currentTrackIndex);
+                    });
+                    
+                    dom.playIcon.className = `fas ${this.isPlaying ? 'fa-pause' : 'fa-play'}`;
+                    dom.playPauseBtn.setAttribute('aria-label', this.isPlaying ? 'Pause' : 'Play');
+                    dom.playPauseBtn.setAttribute('data-tooltip', this.isPlaying ? 'Pause' : 'Play');
+                    
+                    this.drawVisualizer();
+                },
+                drawVisualizer() {
+                    if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
+                    const canvas = dom.visualizerCanvas;
+                    const ctx = canvas.getContext('2d');
+                    if (!this.isPlaying || !this.analyser) {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        return;
+                    }
+                    
+                    const bufferLength = this.analyser.frequencyBinCount;
+                    const dataArray = new Uint8Array(bufferLength);
+                    const { width, height } = canvas;
+
+                    const draw = () => {
+                        this.animationFrameId = requestAnimationFrame(draw);
+                        this.analyser.getByteFrequencyData(dataArray);
+                        ctx.clearRect(0, 0, width, height);
+                        const barWidth = (width / bufferLength) * 1.5;
+                        let x = 0;
+                        for (let i = 0; i < bufferLength; i++) {
+                            const barHeight = (dataArray[i] / 255) * height * 1.2;
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                            ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+                            x += barWidth + 3;
+                        }
+                    };
+                    draw();
+                },
+                playTrack(index) {
+                    playSound(587.33, 0.08, 'sine');
+                    if (index < 0 || index >= this.tracks.length) return;
+                    this.currentTrackIndex = index;
+                    dom.audio.src = this.tracks[index].url;
+                    dom.contentWindow.classList.add('loading');
+                    dom.audio.play()
+                        .then(() => this.setupAudioAnalysis())
+                        .catch(e => {
+                            if (e.name !== 'AbortError') {
+                                console.error("Error playing audio:", e);
+                            }
+                        });
+                    this.updateUI();
+                },
+                togglePlay() {
+                    playSound(this.isPlaying ? 440 : 523.25, 0.1, 'square');
+                    if (dom.audio.src) {
+                        this.isPlaying ? dom.audio.pause() : dom.audio.play();
+                    } else {
+                        this.playTrack(0);
+                    }
+                },
+                nextTrack() { playSound(523.25, 0.1, 'square'); this.playTrack((this.currentTrackIndex + 1) % this.tracks.length); },
+                prevTrack() { playSound(493.88, 0.1, 'square'); this.playTrack((this.currentTrackIndex - 1 + this.tracks.length) % this.tracks.length); },
+                formatTime(seconds) {
+                    if (isNaN(seconds)) return '0:00';
+                    const mins = Math.floor(seconds / 60);
+                    const secs = Math.floor(seconds % 60);
+                    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                },
+                updateProgress() {
+                    const { currentTime, duration } = dom.audio;
+                    dom.progressBar.style.width = `${(currentTime / duration) * 100}%`;
+                    dom.currentTimeEl.textContent = this.formatTime(currentTime);
+                    dom.durationEl.textContent = this.formatTime(duration);
+                },
+                setProgress(e) {
+                    if(!dom.audio.duration) return;
+                    playSound(392, 0.05, 'sine');
+                    dom.audio.currentTime = (e.offsetX / dom.progressContainer.clientWidth) * dom.audio.duration;
+                },
+            };
+
+            const Gallery = {
+                init() {
+                    dom.galleryItems.forEach(item => item.addEventListener('click', () => this.show(item.src)));
+                    dom.lightboxClose.addEventListener('click', () => this.hide());
+                    dom.lightbox.addEventListener('click', (e) => { if (e.target === dom.lightbox) this.hide(); });
+                    this.setupScrollObserver();
+                },
+                setupScrollObserver() {
+                    if (!('IntersectionObserver' in window)) {
+                        dom.galleryItems.forEach(item => item.classList.add('visible'));
+                        return;
+                    }
+                    const observer = new IntersectionObserver((entries, obs) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.2 });
+                    dom.galleryItems.forEach(item => observer.observe(item));
+                },
+                show(src) { playSound(659.25, 0.08, 'sine'); dom.lightboxImg.src = src; dom.lightbox.classList.add('show'); },
+                hide() { dom.lightbox.classList.remove('show'); }
+            };
+            
+            const Clock = {
+                init() {
+                    this.update();
+                    setInterval(() => this.update(), 1000);
+                },
+                update() {
+                    const now = new Date();
+                    const hours = now.getHours();
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    const formattedHours = ((hours + 11) % 12 + 1);
+
+                    dom.timeEl.textContent = `${formattedHours}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} ${ampm}`;
+                    dom.dateEl.textContent = now.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    const startOfYear = new Date(now.getFullYear(), 0, 1);
+                    const dayOfYear = Math.floor((now - startOfYear) / 86400000) + 1;
+                    dom.dayOfYearEl.textContent = dayOfYear.toString().padStart(3, '0');
+                    dom.weekNumberEl.textContent = Math.ceil(dayOfYear / 7).toString().padStart(2, '0');
+                }
+            };
+
+            function init() {
+                Preloader.init();
+                Header3D.init();
+                Starfield.init();
+                Navigation.init();
+                MusicPlayer.init();
+                Gallery.init();
+                Clock.init();
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>
